@@ -489,6 +489,7 @@ phpunit
 ##### local dev stuff
 devReadme
 debugCli.php
+.phpunit.result.cache
 
 ##### ignore log
 /Runtime
