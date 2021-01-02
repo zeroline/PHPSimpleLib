@@ -12,10 +12,10 @@ trait Instanciator
     {
         return ObjectFactory::create(get_called_class(), func_get_args());
     }
-    private function __clone()
+    public function __clone()
     {
     }
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 }
