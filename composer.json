@@ -1,0 +1,30 @@
+{
+  "name": "zeroline/phpsimplelib",
+  "description": "Component library for multi-module web applications",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Frederik Nieß",
+      "email": "fred@zeroline.me"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "PHPSimpleLib": "src/"
+    },
+    "psr-4": {
+      "PHPSimpleLib\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "PHPSimpleLib\\Test\\": "test/"
+    }
+  },
+  "require": {
+    "php": "8.0.*",
+    "ext-mbstring": "*",
+    "ext-pdo_mysql": "*"
+  }
+}
