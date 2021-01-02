@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Logging;

@@ -15,8 +15,9 @@ class ManagerCommandController extends CliController
 {
     private const LINE = '================================';
 
-    private function getJobStatusString(int $status) : string {
-        switch($status) {
+    private function getJobStatusString(int $status): string
+    {
+        switch ($status) {
             case JobModel::STATUS_OPEN:
                 return 'Open';
             case JobModel::STATUS_PROCESSING:
@@ -32,25 +33,24 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function listAction(int $jobTypeId, int $limit = 10) : void {
+    public function listAction(int $jobTypeId, int $limit = 10): void
+    {
         $jobType = JobTypeService::getJobTypeById($jobTypeId);
-        if($jobType) {
+        if ($jobType) {
             $jobsForProcessing = JobConsumerService::getJobsForProcessingByType($jobType, $limit);
-            foreach($jobsForProcessing as $jobForProcessing) {
+            foreach ($jobsForProcessing as $jobForProcessing) {
                 $job = $jobForProcessing->getJob();
                 $this->outLine(self::LINE);
-                $this->outLine($jobType->getName().' ('.$this->getJobStatusString($job->getStatus()).')');
+                $this->outLine($jobType->getName() . ' (' . $this->getJobStatusString($job->getStatus()) . ')');
                 $this->outLine($job->payload);
-                $this->outLine(self::LINE.PHP_EOL);
+                $this->outLine(self::LINE . PHP_EOL);
             }
         } else {
             $this->outLine('Invalid job type');
         }
     }
 
-    public function listTypes() : void {
-
+    public function listTypes(): void
+    {
     }
-
-
 }

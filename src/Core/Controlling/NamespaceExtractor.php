@@ -11,7 +11,7 @@ final class NamespaceExtractor
      * @param string $src
      * @return string|null
      */
-    public static function byToken(string $src) : ?string
+    public static function byToken(string $src): ?string
     {
         $tokens = token_get_all($src);
         $count = count($tokens);
@@ -40,14 +40,14 @@ final class NamespaceExtractor
             return $namespace;
         }
     }
-    
+
     /**
      * Extracts the namespace via regex
      *
      * @param string $src
      * @return string|null
      */
-    public static function byRegExp(string $src) : ?string
+    public static function byRegExp(string $src): ?string
     {
         if (preg_match('#^namespace\s+(.+?);#sm', $src, $m)) {
             return $m[1];

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -14,20 +15,17 @@ trait ValidatorTrait
      * @var array
      */
     protected $fieldsForValidation = array();
-    
-    /**
+/**
      *
      * @var array
      */
     protected $fieldsForValidationScopes = array();
-
-    /**
+/**
      *
      * @var array
      */
     protected $fieldValidationErrors = array();
-
-    /**
+/**
      * @see \PHPSimpleLib\Core\Data\EnumFilterModes
      *
      * @var string
@@ -40,8 +38,9 @@ trait ValidatorTrait
      * @param string $filterMode @see \PHPSimpleLib\Core\Data\EnumFilterModes
      * @return void
      */
-    protected function setFilterMode(string $filterMode) : void {
-        if(in_array($filterMode, [EnumFilterModes::FILTER_MODE_AFTER_AFTER_FETCH, EnumFilterModes::FILTER_MODE_BEFORE_SAVE, EnumFilterModes::FILTER_MODE_BOTH])) {
+    protected function setFilterMode(string $filterMode): void
+    {
+        if (in_array($filterMode, [EnumFilterModes::FILTER_MODE_AFTER_AFTER_FETCH, EnumFilterModes::FILTER_MODE_BEFORE_SAVE, EnumFilterModes::FILTER_MODE_BOTH])) {
             $this->filterMode = $filterMode;
         } else {
             throw new \Exception('Invalid filter mode.');
@@ -53,7 +52,8 @@ trait ValidatorTrait
      *
      * @return string
      */
-    protected function getFilterMode() : string {
+    protected function getFilterMode(): string
+    {
         return $this->filterMode;
     }
 
@@ -63,7 +63,7 @@ trait ValidatorTrait
      * @param array $fieldsForValidation
      * @return void
      */
-    public function setFieldsForValidation(array $fieldsForValidation) : void
+    public function setFieldsForValidation(array $fieldsForValidation): void
     {
         $this->fieldsForValidation = $fieldsForValidation;
     }
@@ -76,17 +76,17 @@ trait ValidatorTrait
     {
             return $this->fieldValidationErrors;
     }
-    
+
     /**
      *
      * @param string $scopeName
      * @return boolean
      */
-    public function hasScope(string $scopeName) : bool
+    public function hasScope(string $scopeName): bool
     {
         return (bool) array_key_exists($scopeName, $this->fieldsForValidationScopes);
     }
-    
+
     /**
      *
      * @param string $scope
@@ -102,10 +102,8 @@ trait ValidatorTrait
         }
 
         $valid = true;
-
         foreach ($fields as $name => $rules) {
             $value = (isset($this->{$name}) ? $this->{$name} : null);
-
             foreach ($rules as $rule => $arguments) {
                 $result = null;
                 if (is_string($rule)) {
@@ -113,7 +111,7 @@ trait ValidatorTrait
                         continue;
                     }
 
-                    if(in_array($rule, array(EnumValidatorRules::FILTER_ENCODE_HTML, EnumValidatorRules::FILTER_STRIP_HTML))) {
+                    if (in_array($rule, array(EnumValidatorRules::FILTER_ENCODE_HTML, EnumValidatorRules::FILTER_STRIP_HTML))) {
                         continue;
                     }
 
@@ -147,12 +145,13 @@ trait ValidatorTrait
      *
      * @return void
      */
-    public function filter() : void {
+    public function filter(): void
+    {
         $fields = $this->fieldsForValidation;
         foreach ($fields as $name => $rules) {
             $value = (isset($this->{$name}) ? $this->{$name} : null);
             foreach ($rules as $rule => $arguments) {
-                if(in_array($rule, array(EnumValidatorRules::FILTER_ENCODE_HTML, EnumValidatorRules::FILTER_STRIP_HTML))) {
+                if (in_array($rule, array(EnumValidatorRules::FILTER_ENCODE_HTML, EnumValidatorRules::FILTER_STRIP_HTML))) {
                     if (method_exists(Validator::class, $rule)) {
                         $arguments = array_merge(array($value), $arguments);
                         $this->{$name} = forward_static_call_array(array(Validator::class,$rule), $arguments);

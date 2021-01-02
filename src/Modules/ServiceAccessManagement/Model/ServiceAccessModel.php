@@ -13,7 +13,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
     public function __construct($data = null)
     {
         parent::__construct($data);
-        
+
         $this->addAutomaticField('updated', function ($model) {
             $model->updated = date("Y-m-d H:i:s");
         });
@@ -27,7 +27,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
     protected $ignoreFieldsOnSerialization = array(
         'appSecret',
     );
-    
+
     protected $fieldsForValidation = array(
         'name' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -52,7 +52,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
             EnumValidatorRules::REQUIRED => array(),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
     /**
@@ -60,7 +60,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -80,7 +80,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getAppKey() : string
+    public function getAppKey(): string
     {
         return $this->appKey;
     }
@@ -90,7 +90,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getAppSecret() : string
+    public function getAppSecret(): string
     {
         return $this->appSecret;
     }
@@ -100,7 +100,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getUpdated() : string
+    public function getUpdated(): string
     {
         return $this->updated;
     }
@@ -110,7 +110,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getCreated() : string
+    public function getCreated(): string
     {
         return $this->updated;
     }
@@ -120,7 +120,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return int
      */
-    public function getActive() : int
+    public function getActive(): int
     {
         return $this->active;
     }
@@ -130,7 +130,7 @@ class ServiceAccessModel extends DatabaseAbstractionModel
      *
      * @return array
      */
-    public function getValues() : array
+    public function getValues(): array
     {
         return ServiceAccessValuesModel::repository()->where('serviceaccessid', $this->getId())->read();
     }

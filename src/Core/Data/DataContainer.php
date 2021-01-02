@@ -1,18 +1,18 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
 
 class DataContainer
 {
-    
+
     /**
      *
      * @var array
      */
     private $data = array();
-    
-    /**
+/**
      *
      * @param array|object $data
      */
@@ -23,7 +23,7 @@ class DataContainer
         }
         $this->data = $data;
     }
-    
+
     /**
      *
      * @return array
@@ -48,7 +48,7 @@ class DataContainer
         }
         return $this->{$name};
     }
-    
+
     /**
      *
      * @param string $name
@@ -61,7 +61,7 @@ class DataContainer
         }
         return null;
     }
-    
+
     /**
      *
      * @param string $name
@@ -71,7 +71,7 @@ class DataContainer
     {
         $this->data[$name] = $value;
     }
-    
+
     /**
      *
      * @param string $name

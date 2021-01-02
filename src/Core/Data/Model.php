@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -10,20 +11,17 @@ class Model implements \JsonSerializable
      * @var array
      */
     protected $data = array();
-    
-    /**
+/**
      *
      * @var array
      */
     protected $dirtyFields = array();
-    
-    /**
+/**
      *
      * @var array
      */
     protected $serializableFields = array();
-    
-    /**
+/**
      *
      * @param array $data
      */
@@ -34,7 +32,7 @@ class Model implements \JsonSerializable
         }
         $this->data = $data;
     }
-    
+
     /**
      *
      * @param string $name
@@ -46,7 +44,7 @@ class Model implements \JsonSerializable
             return $this->data[$name];
         }
     }
-    
+
     /**
      *
      * @param string $name
@@ -59,7 +57,7 @@ class Model implements \JsonSerializable
         }
         $this->data[$name] = $value;
     }
-    
+
     /**
      *
      * @param string $name
@@ -69,34 +67,34 @@ class Model implements \JsonSerializable
     {
         return isset($this->data[$name]);
     }
-    
+
     /**
      *
      * @return array
      */
-    public function getDirtyFields() : array
+    public function getDirtyFields(): array
     {
         return $this->dirtyFields;
     }
-    
+
     /**
      *
      * @return array
      */
-    public function getDirtyFieldNames() : array
+    public function getDirtyFieldNames(): array
     {
         return array_keys($this->dirtyFields);
     }
-    
+
     /**
      *
      * @return bool
      */
-    public function isDirty() : bool
+    public function isDirty(): bool
     {
         return (bool)(count($this->dirtyFields) > 0);
     }
-    
+
     /**
      *
      */
@@ -104,22 +102,22 @@ class Model implements \JsonSerializable
     {
         $this->dirtyFields = array();
     }
-    
+
     /**
      *
      * @return array
      */
-    public function getExistingFieldNames() : array
+    public function getExistingFieldNames(): array
     {
         return array_keys($this->data);
     }
-    
+
     /**
      *
      * @param string $fieldName
      * @return bool
      */
-    public function hasExistingField(string $fieldName) : bool
+    public function hasExistingField(string $fieldName): bool
     {
         return in_array($fieldName, $this->getExistingFieldNames());
     }

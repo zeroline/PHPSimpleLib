@@ -35,7 +35,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return integer
      */
-    public function getActiveState() : int
+    public function getActiveState(): int
     {
         return $this->activeState;
     }
@@ -45,7 +45,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return boolean
      */
-    public function getIsActive() : bool
+    public function getIsActive(): bool
     {
         return ($this->getActiveState() === EnumEntryState::ACTIVE);
     }
@@ -55,7 +55,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return boolean
      */
-    public function getIsInActive() : bool
+    public function getIsInActive(): bool
     {
         return ($this->getActiveState() === EnumEntryState::INACITVE);
     }
@@ -65,7 +65,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return boolean
      */
-    public function getIsDeleted() : bool
+    public function getIsDeleted(): bool
     {
         return ($this->getActiveState() === EnumEntryState::DELETED);
     }
@@ -75,7 +75,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return boolean
      */
-    public function getIsMarkedForPermanentDeletion() : bool
+    public function getIsMarkedForPermanentDeletion(): bool
     {
         return ($this->getActiveState() === EnumEntryState::REQUEST_FOR_PERM_DELETION);
     }
@@ -84,7 +84,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return void
      */
-    public function markAsActive() : void
+    public function markAsActive(): void
     {
         $this->activeState = EnumEntryState::ACTIVE;
     }
@@ -93,7 +93,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return void
      */
-    public function markAsInActive() : void
+    public function markAsInActive(): void
     {
         $this->activeState = EnumEntryState::INACITVE;
     }
@@ -102,7 +102,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return void
      */
-    public function markAsDeleted() : void
+    public function markAsDeleted(): void
     {
         $this->activeState = EnumEntryState::DELETED;
     }
@@ -111,7 +111,7 @@ class DataIntegrityModel extends DatabaseAbstractionModel
      *
      * @return void
      */
-    public function markAsMarkedForPermanentDeletion() : void
+    public function markAsMarkedForPermanentDeletion(): void
     {
         $this->activeState = EnumEntryState::REQUEST_FOR_PERM_DELETION;
     }

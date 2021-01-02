@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -10,7 +11,10 @@ class HTTPNavigator
 {
     use Singleton;
 
-    public function resolveHTTP() : void {
+
+
+    public function resolveHTTP(): void
+    {
         $p = HttpRequestParser::getInstance();
         $p->setRouteMappings(ModuleManager::getInstance()->getAllRouteMappings());
         $p->parse();

@@ -13,7 +13,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
     protected $ignoreFieldsOnSerialization = array(
 
     );
-    
+
     protected $fieldsForValidation = array(
         'moduleName' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -30,7 +30,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
             EnumValidatorRules::REQUIRED => array(),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
     /**
@@ -38,7 +38,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getModuleName() : string
+    public function getModuleName(): string
     {
         return $this->moduleName;
     }
@@ -48,7 +48,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getMigrationFile() : string
+    public function getMigrationFile(): string
     {
         return $this->migrationFile;
     }
@@ -58,7 +58,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getMigrationDate() : string
+    public function getMigrationDate(): string
     {
         return $this->migrationDate;
     }
@@ -68,7 +68,7 @@ class MigrationStatusModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getMigrationData() : string
+    public function getMigrationData(): string
     {
         return $this->migrationData;
     }

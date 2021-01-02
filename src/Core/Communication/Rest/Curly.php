@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Communication\Rest;
@@ -18,8 +19,7 @@ class Curly
      * @var array
      */
     public static $customHeader = array();
-    
-    /**
+/**
      * Generates a curl instance without excecuting.
      * Builds header, content and basic configuration.
      *
@@ -40,30 +40,27 @@ class Curly
             EnumHTTPVerbs::HTTP_VERB_DELETE,
             EnumHTTPVerbs::HTTP_VERB_PATCH
         );
-
         if (!in_array($type, $allowedVerbs)) {
             throw new \Exception("Unsupported HTTP verb used.");
         }
 
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
         curl_setopt($ch, CURLOPT_ENCODING, '');
-        
-        if (in_array($type, array(
+
+        if (
+            in_array($type, array(
             EnumHTTPVerbs::HTTP_VERB_POST,
             EnumHTTPVerbs::HTTP_VERB_PUT,
             EnumHTTPVerbs::HTTP_VERB_DELETE,
-            EnumHTTPVerbs::HTTP_VERB_PATCH))) {
+            EnumHTTPVerbs::HTTP_VERB_PATCH))
+        ) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             if (is_string($params)) {
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge(
-                    array(
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge(array(
                         'Content-Type: application/json',
-                        'Content-Length: ' . strlen($params)),
-                    static::$customHeader
-                ));
+                        'Content-Length: ' . strlen($params)), static::$customHeader));
             }
         } elseif ($type === EnumHTTPVerbs::HTTP_VERB_GET) {
             $url .= (strpos($url, '?') !== false ? '&' : '?') . http_build_query($params);
@@ -71,12 +68,11 @@ class Curly
                 curl_setopt($ch, CURLOPT_HTTPHEADER, static::$customHeader);
             }
         }
-        
-        curl_setopt($ch, CURLOPT_URL, utf8_decode($url));
 
+        curl_setopt($ch, CURLOPT_URL, utf8_decode($url));
         return $ch;
     }
-    
+
     /**
      * Post an array of data.
      * JSON response is expected an json_decode will be excecuted.
@@ -89,7 +85,7 @@ class Curly
     {
         return json_decode(curl_exec(static::init($url, EnumHTTPVerbs::HTTP_VERB_POST, $params)));
     }
-    
+
     /**
      * Post the given data as a json_encoded string. json_encode will be automaticly cast
      * on the data.
@@ -103,7 +99,7 @@ class Curly
     {
         return json_decode(curl_exec(static::init($url, EnumHTTPVerbs::HTTP_VERB_POST, json_encode($data))));
     }
-    
+
     /**
      * Perform a GET request. The data as an array will be concatenated and encoded.
      * JSON response is expected an json_decode will be excecuted.
@@ -116,7 +112,7 @@ class Curly
     {
         return json_decode(curl_exec(static::init($url, 'get', $params)));
     }
-    
+
     /**
      * Short individual function for posting a json string to a
      * url. No special headers or configuration will happen.
@@ -130,7 +126,6 @@ class Curly
     public static function nakedPost(string $url, string $data)
     {
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');

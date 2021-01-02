@@ -4,8 +4,10 @@ namespace PHPSimpleLib\Modules\JobManagement\Service;
 
 use PHPSimpleLib\Modules\JobManagement\Model\JobTypeModel;
 
-final class JobTypeService {
-    public static function addJobType(string $name, int $mode, string $locator, int $maxRetries = JobTypeModel::DEFAULT_MAX_RETRIES, int $retryDelay = JobTypeModel::DEFAULT_RETRY_DELAY,  ?string $description, ?array $configuration) : ?JobTypeModel {
+final class JobTypeService
+{
+    public static function addJobType(string $name, int $mode, string $locator, int $maxRetries = JobTypeModel::DEFAULT_MAX_RETRIES, int $retryDelay = JobTypeModel::DEFAULT_RETRY_DELAY, ?string $description, ?array $configuration = array()): ?JobTypeModel
+    {
         $model = new JobTypeModel([
             'name' => $name,
             'mode' => $mode,
@@ -16,7 +18,7 @@ final class JobTypeService {
             'retryDelay' => $retryDelay
         ]);
 
-        if($model->validateAndSave()) {
+        if ($model->validateAndSave()) {
             return $model;
         }
         return null;
@@ -28,7 +30,8 @@ final class JobTypeService {
      * @param integer $id
      * @return JobTypeModel|null
      */
-    public static function getJobTypeById(int $id) : ?JobTypeModel {
+    public static function getJobTypeById(int $id): ?JobTypeModel
+    {
         return JobTypeModel::findOneById($id);
     }
 
@@ -38,7 +41,8 @@ final class JobTypeService {
      * @param string $name
      * @return JobTypeModel|null
      */
-    public static function getJobTypeByName(string $name): ?JobTypeModel {
+    public static function getJobTypeByName(string $name): ?JobTypeModel
+    {
         return JobTypeModel::repository()->where('name', $name)->readOne();
     }
 }

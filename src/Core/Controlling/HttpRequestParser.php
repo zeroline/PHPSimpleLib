@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -9,31 +10,26 @@ use PHPSimpleLib\Core\Controlling\ModuleManager;
 class HttpRequestParser extends Parser
 {
     protected $routeMappings = array();
-    
-    /**
+/**
      *
      * @var string
      */
     private $module = null;
-
-    /**
+/**
      *
      * @var Controller
      */
     private $controller = null;
-
-    /**
+/**
      *
      * @var string
      */
     private $action = null;
-
-    /**
+/**
      *
      * @var array
      */
     private $parameter = array();
-    
     public function setRouteMappings(array $mappings)
     {
         $this->routeMappings = $mappings;
@@ -58,7 +54,7 @@ class HttpRequestParser extends Parser
     {
         return $this->parameter;
     }
-    
+
     public function getPostedParameter(): array
     {
         if (is_array($_POST)) {
@@ -66,7 +62,7 @@ class HttpRequestParser extends Parser
         }
         return array();
     }
-    
+
     public function getPostedBody(): string
     {
         return file_get_contents('php://input');
@@ -78,7 +74,6 @@ class HttpRequestParser extends Parser
         $path = parse_url($uri, PHP_URL_PATH);
         $method = strtoupper($_SERVER['REQUEST_METHOD']);
         $combinedPath = $method . ':' . $path;
-        
         if (array_key_exists($combinedPath, $this->routeMappings)) {
             $foundRoute = $this->routeMappings[$combinedPath];
             $this->action = $foundRoute->actionName;
@@ -88,7 +83,7 @@ class HttpRequestParser extends Parser
         } else {
             $matches = array();
             foreach ($this->routeMappings as $mapping => $routeData) {
-                //if (preg_match('~' . $mapping . '~', $combinedPath, $matches)) {
+        //if (preg_match('~' . $mapping . '~', $combinedPath, $matches)) {
                 if (preg_match('#^' . $mapping . '$#', $combinedPath, $matches)) {
                     $foundRoute = $this->routeMappings[$mapping];
                     $this->action = $foundRoute->actionName;

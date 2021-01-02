@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -20,7 +21,7 @@ final class SQLExecuter
      *
      * @return void
      */
-    public static function loadAndExecute(string $sqlFilename, string $connection = DBConnectionManager::DEFAULT_CONNECTION_NAME) : void
+    public static function loadAndExecute(string $sqlFilename, string $connection = DBConnectionManager::DEFAULT_CONNECTION_NAME): void
     {
         if (!is_readable($sqlFilename)) {
             throw new \Exception('SQL file "' . sqlFilename . '" is not readable.');
@@ -28,19 +29,16 @@ final class SQLExecuter
         $repository = GenericRepository::getInstance();
         $repository->setConnection($connection);
         $repository->beginTransaction();
-
         $result = null;
         $query = '';
-
         $fileLines = file($sqlFilename);
         foreach ($fileLines as $line) {
             $startWith = substr(trim($line), 0, 2);
             $endWith = substr(trim($line), -1, 1);
-            
             if (empty($line) || $startWith == '--' || $startWith == '/*' || $startWith == '//') {
                 continue;
             }
-                
+
             $query = $query . $line;
             if ($endWith == ';') {
                 $result = $repository->executeRaw($query);

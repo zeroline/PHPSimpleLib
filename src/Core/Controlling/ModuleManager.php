@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -8,78 +9,70 @@ use PHPSimpleLib\Core\Controlling\NamespaceExtractor;
 class ModuleManager
 {
     use \PHPSimpleLib\Core\Data\ConfigReaderTrait;
-    use \PHPSimpleLib\Core\ObjectFactory\Singleton;
+                                                                                                                                                                                                       use \PHPSimpleLib\Core\ObjectFactory\Singleton;
+
 
     const DEFAULT_LIBRARY_NAME = "PHPSimpleLib";
-    
     const DEFAULT_FOLDER_MODULES = 'Modules';
     const DEFAULT_FOLDER_CONTROLLER = 'Controller';
     const DEFAULT_CONTROLLER_CLASS_SUFFIX = 'Controller';
-    
     const DEFAULT_FOLDER_COMMAND = 'Commands';
     const DEFAULT_COMMAND_CLASS_SUFFIX = 'CommandController';
-
     const RESERVED_MODULE_NAMES = array(
         'PHPSimpleLib',
         'Core',
         'System'
     );
-    
-    /**
+/**
      * Store for all instanciated controller classes
      *
      * @var array
      */
     private $controllerInstances = array();
-
-    /**
+/**
      * Store for all instanciated command controller classes
      *
      * @var array
      */
     private $commandControllerInstances = array();
-
-    /**
+/**
      * Stored route mappings
      *
      * @var array
      */
     private $controllerRouteMappings = array();
-    
-    /**
+/**
      * Module store. Multidimensional with instancs & co
      *
      * @var array
      */
     private $modules = array();
-
-    /**
+/**
      * Stores the folders for the modules
      *
      * @var array
      */
     private $moduleFolder = array();
-
-    /**
+/**
      * Module to controller indexing helper store
      *
      * @var array
      */
     private $moduleController = array();
-
-    /**
+/**
      * Module to command controller indexing helper store
      *
      * @var array
      */
     private $moduleCommandController = array();
-    
+
     /**
-     * 
-     * @param Controller $controller 
-     * @return string 
+     *
+     * @param Controller $controller
+     * @return string
      */
-    public function getSimplifiedControllerName(Controller $controller) : string {
+    public function getSimplifiedControllerName(Controller $controller): string
+    {
         $classNamePartials = explode('\\', get_class($controller));
         $simplifiedControllerClassName = $classNamePartials[count($classNamePartials) - 1];
         $simplifiedControllerClassName2 = str_replace(self::DEFAULT_CONTROLLER_CLASS_SUFFIX, '', ($simplifiedControllerClassName));
@@ -87,11 +80,12 @@ class ModuleManager
     }
 
     /**
-     * 
-     * @param Controller $controller 
-     * @return string 
+     *
+     * @param Controller $controller
+     * @return string
      */
-    public function getSimplifiedCommandControllerName(Controller $controller) : string {
+    public function getSimplifiedCommandControllerName(Controller $controller): string
+    {
         $classNamePartials = explode('\\', get_class($controller));
         $simplifiedControllerClassName = $classNamePartials[count($classNamePartials) - 1];
         $simplifiedControllerClassName2 = str_replace(self::DEFAULT_COMMAND_CLASS_SUFFIX, '', ($simplifiedControllerClassName));
@@ -108,7 +102,7 @@ class ModuleManager
      * @param string $class
      * @return array
      */
-    public function getNamesByControllerClass(string $class) : array
+    public function getNamesByControllerClass(string $class): array
     {
         foreach ($this->modules as $moduleName => $moduleData) {
             foreach ($moduleData as $data) {
@@ -130,7 +124,7 @@ class ModuleManager
      *
      * @throws \Exception
      */
-    private function checkModuleName(string $moduleName) : void
+    private function checkModuleName(string $moduleName): void
     {
         foreach (self::RESERVED_MODULE_NAMES as $reservedName) {
             if (strtolower($moduleName) == strtolower($reservedName)) {
@@ -138,14 +132,14 @@ class ModuleManager
             }
         }
     }
-    
+
     /**
      * Creates a new entry in the module store
      *
      * @param string $moduleName
      * @return void
      */
-    private function addModule(string $moduleName) : void
+    private function addModule(string $moduleName): void
     {
         $this->modules[$moduleName] = array();
         $this->moduleFolder[$moduleName] = null;
@@ -160,11 +154,11 @@ class ModuleManager
      * @param string $folder
      * @return void
      */
-    private function addModuleFolder(string $moduleName, string $folder) : void
+    private function addModuleFolder(string $moduleName, string $folder): void
     {
         $this->moduleFolder[$moduleName] = $folder;
     }
-    
+
     /**
      * Adds a controller instance to the module store.
      * Additional class information and namings are genarted and
@@ -174,7 +168,7 @@ class ModuleManager
      * @param mixed $controller
      * @return void
      */
-    private function addControllerToModule(string $moduleName, $controller) : void
+    private function addControllerToModule(string $moduleName, $controller): void
     {
         $classNamePartials = explode('\\', get_class($controller));
         $simplifiedControllerClassName = $classNamePartials[count($classNamePartials) - 1];
@@ -188,7 +182,7 @@ class ModuleManager
         );
         $this->moduleController[strtolower($moduleName)][strtolower($simplifiedControllerClassName2)] = $controller;
     }
-    
+
     /**
      * Adds a command controller instance to the command controller and module store.
      *
@@ -196,14 +190,14 @@ class ModuleManager
      * @param mixed $controller
      * @return void
      */
-    private function addCommandControllerToModule(string $moduleName, $controller) : void
+    private function addCommandControllerToModule(string $moduleName, $controller): void
     {
         $classNamePartials = explode('\\', get_class($controller));
         $simplifiedControllerClassName = $classNamePartials[count($classNamePartials) - 1];
         $simplifiedControllerClassName2 = str_replace(self::DEFAULT_COMMAND_CLASS_SUFFIX, '', ($simplifiedControllerClassName));
         $this->moduleCommandController[strtolower($moduleName)][strtolower($simplifiedControllerClassName2)] = $controller;
     }
-    
+
     /**
      * Returns a controller instance if found by module name and class name
      *
@@ -220,7 +214,7 @@ class ModuleManager
         }
         return null;
     }
-    
+
     /**
      * Returns a command controller instance if found by module name and class name
      *
@@ -237,36 +231,32 @@ class ModuleManager
         }
         return null;
     }
-    
+
     /**
      * Checks folders for modules and controllers.
      * Stores them for future use.
      *
      * @return void
      */
-    public function prepareControllerInstances() : void
+    public function prepareControllerInstances(): void
     {
         $moduleFolderName = $this->getConfig('moduleFolderName', self::DEFAULT_FOLDER_MODULES);
         $moduleFolder = $this->getConfig('cwd', getcwd()) . DIRECTORY_SEPARATOR . $moduleFolderName;
         $controllerFolderName = $this->getConfig('controllerFolderName', self::DEFAULT_FOLDER_CONTROLLER);
-        
         $commandControllerFolderName = $this->getConfig('commandControllerFolderName', self::DEFAULT_FOLDER_COMMAND);
-
-        // Load modules and controller from application environment
+// Load modules and controller from application environment
         if (is_dir($moduleFolder)) {
             foreach (new \DirectoryIterator($moduleFolder) as $moduleFile) {
                 if ($moduleFile->isDir() && !$moduleFile->isDot()) {
                     $currentModuleFolder = $moduleFile->getFilename();
-                    
                     $this->checkModuleName($currentModuleFolder);
                     $this->addModule($currentModuleFolder);
                     $this->addModuleFolder($currentModuleFolder, $moduleFile->getPath() . DIRECTORY_SEPARATOR . $currentModuleFolder);
-                    
-                    // Controller
+        // Controller
                     $controllerDir = $moduleFolderName . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $controllerFolderName . DIRECTORY_SEPARATOR;
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
-                        $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
+                            $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
                         try {
                             $this->controllerInstances[$controllerClass] = $controllerClass::getInstance();
                             $this->controllerRouteMappings = array_merge($controllerClass::getInstance()->getRouteMappings(), $this->controllerRouteMappings);
@@ -275,12 +265,12 @@ class ModuleManager
                             throw $ex;
                         }
                     }
-                    
+
                     // CommandController
                     $controllerDir = $moduleFolderName . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $commandControllerFolderName . DIRECTORY_SEPARATOR;
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
-                        $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
+                                $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
                         try {
                             $this->commandControllerInstances[$controllerClass] = $controllerClass::getInstance();
                             $this->addCommandControllerToModule($currentModuleFolder, $controllerClass::getInstance());
@@ -295,21 +285,18 @@ class ModuleManager
         // Load modules and controller from core
 
         $coreModuleFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $moduleFolderName;
-
         if (is_dir($coreModuleFolder)) {
             foreach (new \DirectoryIterator($coreModuleFolder) as $moduleFile) {
                 if ($moduleFile->isDir() && !$moduleFile->isDot()) {
                     $currentModuleFolder = $moduleFile->getFilename();
-                    
                     $this->addModule($currentModuleFolder);
                     $this->addModuleFolder($currentModuleFolder, $moduleFile->getPath() . DIRECTORY_SEPARATOR . $currentModuleFolder);
-
                     // CommandController
                     $controllerDir = $coreModuleFolder . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $commandControllerFolderName . DIRECTORY_SEPARATOR;
-                    
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
-                        $controllerClass = NamespaceExtractor::byRegExp(file_get_contents($filename)) . '\\' . str_replace('.php', '', basename($filename));//'\\'.str_replace(array('/','.php'), array('\\',''), $filename);
+                        $controllerClass = NamespaceExtractor::byRegExp(file_get_contents($filename)) . '\\' . str_replace('.php', '', basename($filename));
+                //'\\'.str_replace(array('/','.php'), array('\\',''), $filename);
                         try {
                             $this->commandControllerInstances[$controllerClass] = $controllerClass::getInstance();
                             $this->addCommandControllerToModule($currentModuleFolder, $controllerClass::getInstance());
@@ -321,23 +308,23 @@ class ModuleManager
             }
         }
     }
-    
+
     /**
      * Returns the route mappings array
      *
      * @return array
      */
-    public function getAllRouteMappings() : array
+    public function getAllRouteMappings(): array
     {
         return $this->controllerRouteMappings;
     }
-    
+
     /**
      * Returns the controller intances
      *
      * @return array
      */
-    public function getControllerInstances() : array
+    public function getControllerInstances(): array
     {
         return $this->controllerInstances;
     }
@@ -347,7 +334,7 @@ class ModuleManager
      *
      * @return array
      */
-    public function getCommandControllerInstances() : array
+    public function getCommandControllerInstances(): array
     {
         return $this->commandControllerInstances;
     }
@@ -357,7 +344,7 @@ class ModuleManager
      *
      * @return array
      */
-    public function getModuleNames() : array
+    public function getModuleNames(): array
     {
         return array_keys($this->modules);
     }
@@ -368,27 +355,30 @@ class ModuleManager
      * @param string $moduleName
      * @return string
      */
-    public function getModulePath(string $moduleName) : string
+    public function getModulePath(string $moduleName): string
     {
         return $this->moduleFolder[$moduleName];
     }
-    
+
     /**
      * Returns the big modules array
      *
      * @return array
      */
-    public function getModules() : array
+    public function getModules(): array
     {
         return $this->modules;
     }
 
     /**
      * Returns all modules / module controller instances
-     * @param null|string $moduleName 
-     * @return array 
+     * @param null|string $moduleName
+     * @return array
      */
-    public function getCommandControllerModules(?string $moduleName = null) : array {
-        return $moduleName ? array_filter($this->moduleCommandController, function($key) use ($moduleName) { return $key == strtolower($moduleName); } ,ARRAY_FILTER_USE_KEY ) : $this->moduleCommandController;
+    public function getCommandControllerModules(?string $moduleName = null): array
+    {
+        return $moduleName ? array_filter($this->moduleCommandController, function ($key) use ($moduleName) {
+            return $key == strtolower($moduleName);
+        }, ARRAY_FILTER_USE_KEY) : $this->moduleCommandController;
     }
 }

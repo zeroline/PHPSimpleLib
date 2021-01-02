@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -8,41 +9,36 @@ use PHPSimpleLib\Core\Controlling\Middleware as Middleware;
 class Controller
 {
     use \PHPSimpleLib\Core\ObjectFactory\Singleton;
-    
+
+
     const METHOD_SUFFIX = 'Action';
     const CONTROLLER_SUFFIX = 'Controller';
-    
-    /**
+/**
      *
      * @Inject \PHPSimpleLib\Core\Event\Mediator
      * @var \PHPSimpleLib\Core\Event\Mediator
      */
     protected $mediator = null;
-
-    /**
+/**
      *
      * @var array
      */
     protected $routeMapping = array();
-    
-    /**
+/**
      *
      * @var array
      */
     protected $middleware = array();
-    
-    /**
+/**
      *
      * @var array
      */
     protected $middlewareData = array();
-
-    /**
+/**
      * @var string
      */
     protected $methodToCall = null;
-    
-    /**
+/**
      *
      * @param string $fullClassName
      * @param array $config
@@ -51,16 +47,16 @@ class Controller
     {
         $this->middleware[$fullClassName] = $config;
     }
-    
+
     /**
      *
      * @return array
      */
-    private function getMiddlewares() : array
+    private function getMiddlewares(): array
     {
         return $this->middleware;
     }
-    
+
     /**
      *
      * @param string $route
@@ -76,13 +72,13 @@ class Controller
             'route' => $route
         );
     }
-    
+
     /**
      * Returns the simplified class name
      *
      * @return string
      */
-    public function getSimplifiedControllerName() : string
+    public function getSimplifiedControllerName(): string
     {
         return (str_replace(self::CONTROLLER_SUFFIX, '', substr(get_called_class(), strrpos(get_called_class(), '\\') + 1)));
     }
@@ -90,21 +86,21 @@ class Controller
      *
      * @return array
      */
-    public function getRouteMappings() : array
+    public function getRouteMappings(): array
     {
         return $this->routeMapping;
     }
-    
+
     /**
      *
      * @param string $methodName
      * @return boolean
      */
-    public function isActionAvailable(string $methodName) : bool
+    public function isActionAvailable(string $methodName): bool
     {
         return (bool)method_exists($this, $methodName . self::METHOD_SUFFIX);
     }
-    
+
     /**
      *
      * @param string $middlewareClass
@@ -118,7 +114,7 @@ class Controller
         }
         $this->middlewareData[$middlewareClass][$fieldName] = $value;
     }
-    
+
     /**
      *
      * @param string $middlewareClass
@@ -135,7 +131,7 @@ class Controller
         }
         return $fallback;
     }
-    
+
     /**
      *
      * @param string $name
@@ -147,8 +143,7 @@ class Controller
     {
         if (method_exists($this, $name . self::METHOD_SUFFIX)) {
             $this->methodToCall = $name;
-            
-            // Load and execute middlewares
+// Load and execute middlewares
             foreach ($this->getMiddlewares() as $middlewareClass => $config) {
                 $middleware = new $middlewareClass();
                 if ($middleware instanceof Middleware) {

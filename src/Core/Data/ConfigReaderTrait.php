@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -12,8 +13,7 @@ trait ConfigReaderTrait
     * @var array
     */
     protected $config = array();
-
-    /**
+/**
     *
     * @param string $key
     * @param mixed $fallback

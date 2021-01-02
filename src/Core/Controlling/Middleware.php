@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -10,26 +11,22 @@ abstract class Middleware
      * @var string
      */
     private $calledMethod = null;
-    
-    /**
+/**
      *
      * @var array
      */
     private $calledMethodArguments = null;
-    
-    /**
+/**
      *
      * @var \PHPSimpleLib\Core\Controlling\Controller
      */
     private $controller = null;
-    
-    /**
+/**
      *
      * @var array
      */
     private $config = array();
-    
-    /**
+/**
      *
      * @param string $method
      * @param array $arguments
@@ -39,7 +36,7 @@ abstract class Middleware
         $this->calledMethod = $method;
         $this->calledMethodArguments = $arguments;
     }
-    
+
     /**
      *
      * @param \PHPSimpleLib\Core\Controlling\Controller $controller
@@ -48,7 +45,7 @@ abstract class Middleware
     {
         $this->controller = $controller;
     }
-    
+
     /**
      *
      * @param array $config
@@ -57,7 +54,7 @@ abstract class Middleware
     {
         $this->config = $config;
     }
-        
+
     /**
      *
      * @return mixed
@@ -67,7 +64,7 @@ abstract class Middleware
         $value = (array_key_exists($key, $this->config) ? $this->config[$key] : $fallback);
         return $value;
     }
-    
+
     /**
      *
      * @return string
@@ -76,7 +73,7 @@ abstract class Middleware
     {
         return $this->calledMethod;
     }
-    
+
     /**
      *
      * @return array
@@ -85,7 +82,7 @@ abstract class Middleware
     {
         return $this->calledMethodArguments;
     }
-    
+
     /**
      *
      * @return \PHPSimpleLib\Core\Controlling\Controller
@@ -94,7 +91,7 @@ abstract class Middleware
     {
         return $this->controller;
     }
-    
+
     /**
      *
      */

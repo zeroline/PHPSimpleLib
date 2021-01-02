@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -15,7 +16,7 @@ class ArrayReader
     {
         return static::parseArrayPath($key, $config) ?: (is_callable($fallback) ? call_user_func($fallback) : $fallback );
     }
-    
+
     /**
      *
      * @param string $key
@@ -25,7 +26,6 @@ class ArrayReader
     private static function parseArrayPath($key, array $array)
     {
         $parts = explode('.', $key);
-        
         if (sizeof($parts) === 1) {
             if (array_key_exists($parts[0], $array)) {
                 return $array[$parts[0]];

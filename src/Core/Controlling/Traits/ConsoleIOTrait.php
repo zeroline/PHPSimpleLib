@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling\Traits;
@@ -6,14 +7,18 @@ namespace PHPSimpleLib\Core\Controlling\Traits;
 use PHPSimpleLib\Core\Logging\EnumLogLevel;
 use PHPSimpleLib\Core\Logging\OutputFormats;
 
-trait ConsoleIOTrait {
+trait ConsoleIOTrait
+{
+
+
 
     /**
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    protected function getDateForOutput() : string {
-        return '['.date(OutputFormats::DATE_LONG).']';
+    protected function getDateForOutput(): string
+    {
+        return '[' . date(OutputFormats::DATE_LONG) . ']';
     }
     /**
      *
@@ -43,18 +48,19 @@ trait ConsoleIOTrait {
     }
 
     /**
-     * 
-     * @param string $question 
-     * @param string $positive 
-     * @param string $negative 
-     * @return bool 
+     *
+     * @param string $question
+     * @param string $positive
+     * @param string $negative
+     * @return bool
      */
-    protected function confirm(string $question, string $positive = 'y', string $negative = 'n') : bool {
-        $this->out($question.' ('.$positive.'/'.$negative.') ');
-        $handle = fopen ("php://stdin","r");
+    protected function confirm(string $question, string $positive = 'y', string $negative = 'n'): bool
+    {
+        $this->out($question . ' (' . $positive . '/' . $negative . ') ');
+        $handle = fopen("php://stdin", "r");
         $line = fgets($handle);
         fclose($handle);
-        if(strtolower(trim($line)) == $positive){
+        if (strtolower(trim($line)) == $positive) {
             return true;
         }
         return false;
@@ -70,7 +76,7 @@ trait ConsoleIOTrait {
         if (!is_string($data)) {
             $data = print_r($data, true);
         }
-        echo $this->getDateForOutput(). ' [' . $type . '] ' . $data . ($autoEOL ? PHP_EOL : '');
+        echo $this->getDateForOutput() . ' [' . $type . '] ' . $data . ($autoEOL ? PHP_EOL : '');
         flush();
     }
 
@@ -82,7 +88,7 @@ trait ConsoleIOTrait {
      * @param string $type
      * @return void
      */
-    private function simplifiedLog(array $dataToLog, string $type) : void
+    private function simplifiedLog(array $dataToLog, string $type): void
     {
         $printData = array();
         foreach ($dataToLog as $data) {
@@ -101,7 +107,7 @@ trait ConsoleIOTrait {
      *
      * @return void
      */
-    protected function logDebug() : void
+    protected function logDebug(): void
     {
         $this->simplifiedLog(func_get_args(), EnumLogLevel::DEBUG);
     }
@@ -111,7 +117,7 @@ trait ConsoleIOTrait {
      *
      * @return void
      */
-    protected function logInfo() : void
+    protected function logInfo(): void
     {
         $this->simplifiedLog(func_get_args(), EnumLogLevel::INFO);
     }
@@ -121,7 +127,7 @@ trait ConsoleIOTrait {
      *
      * @return void
      */
-    protected function logWarning() : void
+    protected function logWarning(): void
     {
         $this->simplifiedLog(func_get_args(), EnumLogLevel::WARNING);
     }
@@ -131,7 +137,7 @@ trait ConsoleIOTrait {
      *
      * @return void
      */
-    protected function logError() : void
+    protected function logError(): void
     {
         $this->simplifiedLog(func_get_args(), EnumLogLevel::ERROR);
     }

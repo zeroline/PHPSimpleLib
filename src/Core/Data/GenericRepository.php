@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -12,41 +13,30 @@ class GenericRepository
 {
     use \PHPSimpleLib\Core\ObjectFactory\Instanciator;
 
+
     const INTERNAL_FIELD_COUNT_RESULT = 'iCountResult';
     const INTERNAL_JOIN_PREFIX = 'jnd';
-
-    /**
+/**
      *
      * @Inject \PHPSimpleLib\Core\Data\DBConnectionManager
      * @var \PHPSimpleLib\Core\Data\DBConnectionManager
      */
     private $connectionManager = null;
-
-    /**
+/**
      *
      * @var string
      */
     private $modelClassName = '';
-
     protected $limit = null;
-
     protected $offset = null;
-
     protected $order = array();
-
     protected $where = array();
-
     protected $placeholder = array();
-
     protected $table = null;
-
     protected $selectFields = array();
-
     protected $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME;
-
     protected $joins = array();
-
-    /**
+/**
      * Returns a db connection instance from the db connection manager.
      * Null if not found.
      * Default is set to "default".
@@ -413,7 +403,6 @@ class GenericRepository
         $insertStr = 'INSERT INTO ' . $this->encapsulate($this->table) . ' ';
         $fieldsArr = array();
         $valueArr = array();
-
         foreach ($data as $k => $v) {
             $fieldsArr[] = $k;
             $valueArr[] = $this->encapsulatePlaceholder($k, $v);
@@ -421,7 +410,6 @@ class GenericRepository
 
         $insertStr .= '(' . implode(',', $fieldsArr) . ') ';
         $insertStr .= 'VALUES (' . implode(',', $valueArr) . ') ';
-
         return $insertStr;
     }
 
@@ -432,12 +420,9 @@ class GenericRepository
     private function buildSelectCount(): string
     {
         $selectStr = 'SELECT COUNT(*) AS ' . self::INTERNAL_FIELD_COUNT_RESULT . ' ';
-
         $selectStr .= 'FROM ' . $this->encapsulate($this->table) . ' ';
-
         $selectStr .= ' ' . $this->buildWhere();
         $selectStr .= ' ' . $this->buildOrderBy();
-
         if (!is_null($this->limit)) {
             $selectStr .= ' LIMIT ' . $this->limit;
         }
@@ -451,14 +436,12 @@ class GenericRepository
     private function buildJoin(): string
     {
         $joinString = '';
-
         if ($this->hasJoins()) {
             foreach ($this->joins as $joinIndex => $joinData) {
                 $joiningTableName = $joinData['joinTableName'];
                 $joiningTableFieldName = $joinData['joiningTableFieldName'];
                 $baseTableFieldName = $joinData['baseTableFieldName'];
                 $tablePrefix = self::INTERNAL_JOIN_PREFIX . $joinIndex;
-
                 $joinString .= ' JOIN ' . $this->encapsulate($joiningTableName) . ' ' . $tablePrefix . ' ';
                 $joinString .= 'ON (' . $this->encapsulate($tablePrefix . '.') . $joiningTableFieldName . '=' . $baseTableFieldName . ')';
             }
@@ -474,7 +457,6 @@ class GenericRepository
     private function buildGeneralSelectFields(): array
     {
         $joinSelectFields = array($this->getInstance() . '.*');
-
         if ($this->hasJoins()) {
             foreach ($this->joins as $joinIndex => $joinData) {
                 $tablePrefix = self::INTERNAL_JOIN_PREFIX . $joinIndex;
@@ -497,7 +479,6 @@ class GenericRepository
     private function buildSelect(): string
     {
         $selectStr = 'SELECT ';
-
         if (count($this->selectFields)) {
             $selectStr .= implode(', ', $this->selectFields) . ' ';
         } else if ($this->hasJoins()) {
@@ -506,16 +487,12 @@ class GenericRepository
             $selectStr .= '* ';
         }
         $selectStr .= 'FROM ' . $this->encapsulate($this->table) . ' ';
-
-        // Join
+// Join
         $selectStr .= ' ' . $this->buildJoin();
-
-        // Where
+// Where
         $selectStr .= ' ' . $this->buildWhere();
-
-        // Order
+// Order
         $selectStr .= ' ' . $this->buildOrderBy();
-
         if (!is_null($this->limit)) {
             $selectStr .= ' LIMIT ' . $this->limit;
         }
@@ -524,7 +501,6 @@ class GenericRepository
         }
 
         RuntimeFileSystemLogger::getInstance()->log(EnumLogLevel::DEBUG, $selectStr);
-
         return $selectStr;
     }
 
@@ -542,7 +518,6 @@ class GenericRepository
         }
         $updateStr .= implode(',', $updateArr) . ' ';
         $updateStr .= $this->buildWhere() . ' ';
-
         return $updateStr;
     }
 
@@ -553,9 +528,7 @@ class GenericRepository
     private function buildDelete(): string
     {
         $deleteStr = 'DELETE FROM ' . $this->encapsulate($this->table) . ' ';
-
         $deleteStr .= $this->buildWhere() . ' ';
-
         return $deleteStr;
     }
 
@@ -568,7 +541,6 @@ class GenericRepository
     {
         $whereStr = 'WHERE ';
         $whereArr = array();
-
         foreach ($this->where as $where) {
             switch ($where->operator) {
                 case 'IN':
@@ -583,22 +555,23 @@ class GenericRepository
                         }
                         $tmpStr .= implode(',', $tmpArr);
                         $tmpStr .= ')';
-
                         $whereArr[] = $tmpStr;
                     }
+
                     break;
                 case 'IS NULL':
                 case 'IS NOT NULL':
                     $whereArr[] = $this->encapsulate($where->name) . ' ' . $where->operator;
+
                     break;
                 default:
-                    $whereArr[] = $this->encapsulate($where->name) . ' ' . $where->operator . ' ' . $this->encapsulatePlaceholder($where->name, $where->value);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $whereArr[] = $this->encapsulate($where->name) . ' ' . $where->operator . ' ' . $this->encapsulatePlaceholder($where->name, $where->value);
+
                     break;
             }
         }
 
         $whereStr .= implode($combineWith, $whereArr);
-
         if ($whereStr == 'WHERE ') {
             return '';
         }
@@ -614,13 +587,11 @@ class GenericRepository
     {
         $orderByStr = 'ORDER BY ';
         $orderByArr = array();
-
         foreach ($this->order as $order) {
             $orderByArr[] = $order->name . ' ' . $order->direction;
         }
 
         $orderByStr .= implode(',', $orderByArr);
-
         if ($orderByStr == 'ORDER BY ') {
             return '';
         }
@@ -661,7 +632,6 @@ class GenericRepository
             $result = $this->getConnection()->getConnection()->lastInsertId();
         }
         $this->clearConditions();
-
         return $result;
     }
 
@@ -674,7 +644,6 @@ class GenericRepository
         $query = $this->buildSelectCount();
         $result = $this->getConnection()->getRows($query, $this->placeholder);
         $this->clearConditions();
-
         if ($result && isset($result[0]) && isset($result[0][self::INTERNAL_FIELD_COUNT_RESULT])) {
             return intval($result[0][self::INTERNAL_FIELD_COUNT_RESULT]);
         }
@@ -690,7 +659,6 @@ class GenericRepository
     public function read(): array
     {
         $result = array();
-
         if ($this->isModelClassNameSpecified()) {
             $result = $this->readModels($this->getModelClassName());
         } else {
@@ -711,7 +679,6 @@ class GenericRepository
     {
         $query = $this->buildSelect();
         $rows = $this->getConnection()->getRows($query, $this->placeholder);
-
         $models = array();
         foreach ($rows as $row) {
             $models[] = new $modelClass((is_array($row) ? $row : (array) $row));
@@ -772,7 +739,6 @@ class GenericRepository
         $query = $this->buildUpdate($data);
         $result =  $this->getConnection()->execute($query, $this->placeholder);
         $this->clearConditions();
-
         return $result;
     }
 
@@ -785,7 +751,6 @@ class GenericRepository
         $query = $this->buildDelete();
         $result = $this->getConnection()->execute($query, $this->placeholder);
         $this->clearConditions();
-
         return $result;
     }
 

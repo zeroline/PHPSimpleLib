@@ -14,7 +14,7 @@ final class ServiceAccessService
      * @param string $description
      * @return ModelPersistResult
      */
-    public static function addClient(string $name, string $description = "") : ModelPersistResult
+    public static function addClient(string $name, string $description = ""): ModelPersistResult
     {
         $model = new ServiceAccessModel(array(
             'name' => $name,
@@ -35,7 +35,7 @@ final class ServiceAccessService
      * @param string|null $key
      * @return boolean
      */
-    public static function hasClientAccessByAppKey(?string $key) : bool
+    public static function hasClientAccessByAppKey(?string $key): bool
     {
         if (!is_null($key) && !empty($key)) {
             $serviceAccessModel = self::findClientByAppKey($key);
@@ -52,7 +52,7 @@ final class ServiceAccessService
      * @param ServiceAccessModel|null $serviceAccess
      * @return boolean
      */
-    public static function hasClientAccess(?ServiceAccessModel $serviceAccess) : bool
+    public static function hasClientAccess(?ServiceAccessModel $serviceAccess): bool
     {
         if (!is_null($serviceAccess)) {
             return ($serviceAccess->getActive() == 1);
@@ -66,7 +66,7 @@ final class ServiceAccessService
      * @param integer $id
      * @return ServiceAccessModel|null
      */
-    public static function findClientById(int $id) : ?ServiceAccessModel
+    public static function findClientById(int $id): ?ServiceAccessModel
     {
         return ServiceAccessModel::findOneById($id);
     }
@@ -77,7 +77,7 @@ final class ServiceAccessService
      * @param string $key
      * @return ServiceAccessModel|null
      */
-    public static function findClientByAppKey(string $key) : ?ServiceAccessModel
+    public static function findClientByAppKey(string $key): ?ServiceAccessModel
     {
         return ServiceAccessModel::repository()->where('appKey', $key)->readOne();
     }
@@ -87,7 +87,7 @@ final class ServiceAccessService
      *
      * @return array
      */
-    public static function getAllClients() : array
+    public static function getAllClients(): array
     {
         return ServiceAccessModel::repository()->orderByAsc('name')->read();
     }
@@ -98,7 +98,7 @@ final class ServiceAccessService
      * @param ServiceAccessModel $model
      * @return boolean
      */
-    public static function removeClient(ServiceAccessModel $model) : bool
+    public static function removeClient(ServiceAccessModel $model): bool
     {
         return $model->delete();
     }
@@ -109,7 +109,7 @@ final class ServiceAccessService
      * @param ServiceAccessModel $model
      * @return ModelPersistResult
      */
-    public static function setClientInactive(ServiceAccessModel $model) : ModelPersistResult
+    public static function setClientInactive(ServiceAccessModel $model): ModelPersistResult
     {
         $model->active = 0;
         return static::saveModel($model);
@@ -121,7 +121,7 @@ final class ServiceAccessService
      * @param ServiceAccessModel $model
      * @return ModelPersistResult
      */
-    public static function setClientActive(ServiceAccessModel $model) : ModelPersistResult
+    public static function setClientActive(ServiceAccessModel $model): ModelPersistResult
     {
         $model->active = 1;
         return static::saveModel($model);
@@ -134,7 +134,7 @@ final class ServiceAccessService
      * @param string $description
      * @return ModelPersistResult
      */
-    public static function updateDescription(ServiceAccessModel $model, string $description = "") : ModelPersistResult
+    public static function updateDescription(ServiceAccessModel $model, string $description = ""): ModelPersistResult
     {
         $model->description = $description;
         return static::saveModel($model);
@@ -145,7 +145,7 @@ final class ServiceAccessService
      * @param ServiceAccessModel $model
      * @return ModelPersistResult
      */
-    private static function saveModel(ServiceAccessModel $model) : ModelPersistResult
+    private static function saveModel(ServiceAccessModel $model): ModelPersistResult
     {
         if ($model->validateAndSave()) {
             return new ModelPersistResult(true, $model);

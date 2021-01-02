@@ -15,7 +15,7 @@ final class ServiceAccessCommunicationService
     public const HEADER_APP_KEY = 'X-APP-KEY';
     public const HEADER_HASH = 'X-HASH';
     public const HEADER_IV = 'X-IV';
-    
+
     /**
      * Generate a JWT string with the given data.
      * Used for request and response
@@ -42,7 +42,7 @@ final class ServiceAccessCommunicationService
      * @param string $requestString
      * @return JWT|null
      */
-    public static function extractJWTFromMessageString(string $appKey, string $appSecret, string $requestString) : ?JWT
+    public static function extractJWTFromMessageString(string $appKey, string $appSecret, string $requestString): ?JWT
     {
         $jwt = JWTManager::jwtFromString($requestString, $appSecret);
         if ($jwt) {
@@ -61,7 +61,7 @@ final class ServiceAccessCommunicationService
      * @param ServiceAccessModel $serviceAccess
      * @return boolean
      */
-    public static function isRequestValid(string $requestHash, string $requestIV, ServiceAccessModel $serviceAccess) : bool
+    public static function isRequestValid(string $requestHash, string $requestIV, ServiceAccessModel $serviceAccess): bool
     {
         return (base64_decode($requestHash) == HMAC::sign($serviceAccess->getAppKey() . $requestIV, $serviceAccess->getAppSecret()));
     }
@@ -82,11 +82,13 @@ final class ServiceAccessCommunicationService
             $header[] = $key . ': ' . $value;
         }
 
-        if (in_array($requestType, array(
+        if (
+            in_array($requestType, array(
             EnumHTTPVerbs::HTTP_VERB_POST,
             EnumHTTPVerbs::HTTP_VERB_PUT,
             EnumHTTPVerbs::HTTP_VERB_DELETE,
-            EnumHTTPVerbs::HTTP_VERB_PATCH))) {
+            EnumHTTPVerbs::HTTP_VERB_PATCH))
+        ) {
             $dataJWTString = self::createMessageDataJWTString($appKey, $appSecret, $data);
 
             curl_setopt($ch, CURLOPT_POSTFIELDS, $dataJWTString);
@@ -108,11 +110,11 @@ final class ServiceAccessCommunicationService
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
         $curlResult = curl_exec($ch);
-        
+
         if (($errorMessage = curl_error($ch))) {
             throw new \Exception(__FUNCTION__ . ' curl error "' . $errorMessage . '"');
         }
-        
+
         switch ($httpCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE)) {
             case 403: # Access denied
                 throw new \Exception('Request responded with 403 "access denied"');

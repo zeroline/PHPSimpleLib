@@ -12,7 +12,7 @@ class WebSocketConnection
     public $partialBuffer = "";
     public $sendingContinuous = false;
     public $partialMessage = "";
-    
+
     public $hasSentClose = false;
     public function __construct($id, $socket)
     {

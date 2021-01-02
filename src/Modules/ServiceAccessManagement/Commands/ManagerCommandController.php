@@ -9,7 +9,7 @@ use PHPSimpleLib\Modules\ServiceAccessManagement\Model\ServiceAccessValuesModel;
 
 class ManagerCommandController extends CliController
 {
-    public function statusAction() : void
+    public function statusAction(): void
     {
         $this->logInfo('Fetching all client access information...');
         $results = ServiceAccessService::getAllClients();
@@ -23,7 +23,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function showByIdAction(int $id = null) : void
+    public function showByIdAction(int $id = null): void
     {
         $serviceAccess = ServiceAccessService::findClientById($id);
         if ($serviceAccess) {
@@ -45,7 +45,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function addClientAction(string $name) : void
+    public function addClientAction(string $name): void
     {
         list($valid, $model) = ServiceAccessService::addClient($name)->asArray();
         if ($valid) {
@@ -56,7 +56,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function removeByIdAction(int $id) : void
+    public function removeByIdAction(int $id): void
     {
         $serviceAccess = ServiceAccessService::findClientById($id);
         if ($serviceAccess) {
@@ -71,7 +71,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function addValueAction(int $serviceAccessId, string $name, string $content) : void
+    public function addValueAction(int $serviceAccessId, string $name, string $content): void
     {
         $serviceAccess = ServiceAccessService::findClientById($serviceAccessId);
         if ($serviceAccess) {
@@ -87,7 +87,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function updateValueAction(int $serviceAccessValueId, string $content) : void
+    public function updateValueAction(int $serviceAccessValueId, string $content): void
     {
         $serviceAccessValue = ServiceAccessValuesService::findById($serviceAccessValueId);
         if ($serviceAccessValue) {
@@ -102,7 +102,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function removeValueAction(int $serviceAccessValueId) : void
+    public function removeValueAction(int $serviceAccessValueId): void
     {
         $serviceAccessValue = ServiceAccessValuesService::findById($serviceAccessValueId);
         if ($serviceAccessValue) {

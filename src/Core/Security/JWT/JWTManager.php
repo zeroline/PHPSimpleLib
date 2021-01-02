@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Security\JWT;
@@ -13,7 +14,7 @@ final class JWTManager
      *
      * @return string
      */
-    private static function base64Decode($input) : string
+    private static function base64Decode($input): string
     {
         $remainder = strlen($input) % 4;
         if ($remainder) {
@@ -22,7 +23,7 @@ final class JWTManager
         }
         return base64_decode(strtr($input, '-_', '+/'));
     }
-    
+
     /**
      *
      * @param string $input
@@ -51,7 +52,7 @@ final class JWTManager
         }
         return $obj;
     }
-    
+
     /**
      * Encodes a object or array with json_encode. The result is
      * checked within this function.
@@ -61,7 +62,7 @@ final class JWTManager
      *
      * @throws \Exception
      */
-    private static function jsonEncode($input) : string
+    private static function jsonEncode($input): string
     {
         $json = json_encode($input);
         if ($json === false) {
@@ -69,7 +70,7 @@ final class JWTManager
         }
         return $json;
     }
-    
+
     /**
      * Creates a JWT object from the given string.
      * All validity checks will be perfomed.
@@ -81,14 +82,14 @@ final class JWTManager
      *
      * @throws \Exception
      */
-    public static function jwtFromString(string $tokenString, string $key) : JWT
+    public static function jwtFromString(string $tokenString, string $key): JWT
     {
         /* Seperate the string to build the token.  */
         $segments = explode('.', $tokenString);
         if (sizeof($segments) != 3) {
             throw new \Exception('Invalid number of segments in the given JWT string.');
         }
-        
+
         list($encodedHeader, $encodedBody, $encodedSignature) = $segments;
         if (null === ($header = static::jsonDecode(static::base64Decode($encodedHeader)))) {
             throw new \Exception('Invalid header segment encoding');
@@ -100,29 +101,28 @@ final class JWTManager
         if (empty($header->alg)) {
             throw new \Exception('Missing algorithm');
         }
-        
+
         // Get and verify signature
         $signature = static::base64Decode($encodedSignature);
-        
         if ($signature != HMAC::sign("$encodedHeader.$encodedBody", $key, $header->alg)) {
             throw new \Exception('Signature verification failed');
         }
-        
+
         // Check not before timestamp
         if (isset($payload->nbf) && $payload->nbf > time()) {
             throw new \Exception('Token cannot be used before ' . date(\DateTime::ATOM, $payload->nbf));
         }
-        
+
         // Check the issued at timestamp
         if (isset($payload->iat) && $payload->iat > time()) {
             throw new \Exception('Invalid issued at value ' . date(\DateTime::ATOM, $payload->iat));
         }
-        
+
         // Check if the token is expired
         if (isset($payload->exp) && time() >= $payload->exp) {
             throw new \Exception('The given token is expired.');
         }
-        
+
         return JWT::create($header->alg, $payload);
     }
 
@@ -133,21 +133,18 @@ final class JWTManager
      * @param string $key
      * @return string
      */
-    public static function stringFromJWT(JWT $token, string $key) : string
+    public static function stringFromJWT(JWT $token, string $key): string
     {
         $header = array('alg' => $token->getAlgorithm(), 'typ' => $token->getType() );
         $segments = array();
-        
         $segments[] = static::base64Encode(static::jsonEncode($header));
         $segments[] = static::base64Encode(static::jsonEncode($token->getPayload()->getData()));
-        
         $signaturening_input = implode('.', $segments);
         $signaturenature = HMAC::sign($signaturening_input, $key, $token->getAlgorithm());
         $segments[] = static::base64Encode($signaturenature);
-        
         return implode('.', $segments);
     }
-    
+
     /**
      * Creates a new JWT
      *
@@ -155,7 +152,7 @@ final class JWTManager
      * @param string $algorithm
      * @return JWT
      */
-    public static function createJWTWithPayload($payload, string $algorithm = HMAC::ALGORITHM_HS256) : JWT
+    public static function createJWTWithPayload($payload, string $algorithm = HMAC::ALGORITHM_HS256): JWT
     {
         return JWT::create($algorithm, $payload);
     }

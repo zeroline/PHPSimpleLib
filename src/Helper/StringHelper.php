@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -20,22 +21,16 @@ final class StringHelper
     {
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
+// transliterate
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
+// remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
+// trim
         $text = trim($text, '-');
-
-        // remove duplicate -
+// remove duplicate -
         $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
+// lowercase
         $text = strtolower($text);
-
         if (empty($text)) {
             throw new \Exception('Slugified text would be empty.');
         }

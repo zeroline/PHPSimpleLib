@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Modules\ServiceAccessManagement\Lib;
@@ -10,7 +11,8 @@ use PHPSimpleLib\Modules\ServiceAccessManagement\Lib\ServiceAccessControllerTrai
 class ServiceAccessHttpController extends HttpController
 {
     use ServiceAccessControllerTrait;
-    
+
+
     public function __construct()
     {
         $this->addMiddleware(ServiceAccessMiddleware::class);

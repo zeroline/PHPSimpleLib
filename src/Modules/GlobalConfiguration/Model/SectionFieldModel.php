@@ -12,7 +12,7 @@ class SectionFieldModel extends DatabaseAbstractionModel
     public function __construct($data = null)
     {
         parent::__construct($data);
-        
+
         $this->addAutomaticField('updated', function ($model) {
             $model->updated = date("Y-m-d H:i:s");
         });
@@ -24,9 +24,9 @@ class SectionFieldModel extends DatabaseAbstractionModel
     }
 
     protected $ignoreFieldsOnSerialization = array(
-        
+
     );
-    
+
     protected $fieldsForValidation = array(
         'sectionid' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -37,50 +37,50 @@ class SectionFieldModel extends DatabaseAbstractionModel
             EnumValidatorRules::STR_MAX => array(255),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
-    public function getSectionId() : int
+    public function getSectionId(): int
     {
         return $this->sectionid;
     }
 
-    public function setSectionId(int $sectionid) : void
+    public function setSectionId(int $sectionid): void
     {
         $this->sectionid = $sectionid;
     }
 
-    public function getIdentifier() : string
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    public function setIdentifier(string $identifier) : void
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    public function getSection() : ?SectionModel
+    public function getSection(): ?SectionModel
     {
         return SectionModel::findOneById($this->getSectionId());
     }
 
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function setContent(?string $content) : void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
 
-    public function getTypeInformation() : string
+    public function getTypeInformation(): string
     {
         return $this->typeinformation;
     }
 
-    public function setTypeInformation(?string $typeInformation) : void
+    public function setTypeInformation(?string $typeInformation): void
     {
         $this->typeinformation = $typeInformation;
     }

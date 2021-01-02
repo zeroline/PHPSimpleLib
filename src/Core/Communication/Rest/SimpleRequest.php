@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Communication\Rest;
@@ -29,10 +30,9 @@ final class SimpleRequest
         );
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
-        
         return $result;
     }
-    
+
     /**
      * Perform a get request using file_get_context.
      * Data in the form "key" => "value" is automaticly attached to the
@@ -49,13 +49,12 @@ final class SimpleRequest
         } elseif (!String::endsWith($url, '&') && strpos($url, '?') !== false) {
             $url = $url . '&';
         }
-        
+
         $dataString = array();
         foreach ($data as $k => $v) {
             $dataString[] = urlencode($k) . '=' . urlencode($v);
         }
         $url = $url . implode('&', $dataString);
-        
         return file_get_contents($url);
     }
 }

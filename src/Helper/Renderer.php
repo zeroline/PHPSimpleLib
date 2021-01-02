@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -19,16 +20,13 @@ class Renderer
         } else {
             ob_start();
         }
-        
+
         extract($data);
-
-        
         require $filename;
-
         $result = ob_get_clean();
         return $result;
     }
-    
+
     /**
      *
      * @param string $html
@@ -42,11 +40,9 @@ class Renderer
         } else {
             ob_start();
         }
-        
-        extract($data);
 
+        extract($data);
         eval('?> ' . $html . ' ');
-        
         return ob_get_clean();
     }
 
@@ -59,17 +55,17 @@ class Renderer
      * @param string $suffix
      * @return string
      */
-    public static function interpolate(string $message, array $context = array(), $prefix = '{{', $suffix = '}}') : string
+    public static function interpolate(string $message, array $context = array(), $prefix = '{{', $suffix = '}}'): string
     {
         // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
-            // check that the value can be casted to string
+        // check that the value can be casted to string
             if (!is_array($val) && (!is_object($val) || method_exists($val, "__toString"))) {
                 $replace[$prefix . $key . $suffix] = $val;
             }
         }
-    
+
         // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }

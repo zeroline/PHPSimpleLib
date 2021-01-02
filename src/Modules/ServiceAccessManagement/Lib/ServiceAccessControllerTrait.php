@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Modules\ServiceAccessManagement\Lib;
@@ -33,10 +34,9 @@ trait ServiceAccessControllerTrait
      * @param integer $code
      * @return string
      */
-    public function response($data, bool $success, string $message, int $code) : string
+    public function response($data, bool $success, string $message, int $code): string
     {
         $appAccess = $this->getInjectedMiddlewareField(ServiceAccessMiddleware::class, ServiceAccessMiddleware::CONTROLLER_ACCESS_FIELD_NAME);
-
         if (!$appAccess && $code !== 403 && $code < 500) {
             throw new \Exception('Missing application service access model in controller. Should be injected from "' . ServiceAccessMiddleware::class . '"');
         } elseif (!$appAccess && ($code === 403 || $code >= 500)) {
@@ -48,9 +48,7 @@ trait ServiceAccessControllerTrait
 
         http_response_code($code);
         $this->contentHeader(self::CONTENT_TYPE_TEXT_PLAIN_JWT);
-
         $response = HttpResponseBuilder::buildBasicResponseArray($data, $success, $message, $code);
-
         $jwtString = ServiceAccessCommunicationService::createMessageDataJWTString($appAccess->getAppKey(), $appAccess->getAppSecret(), $response);
         return $jwtString;
     }

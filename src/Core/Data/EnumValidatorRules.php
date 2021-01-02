@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -25,9 +26,7 @@ final class EnumValidatorRules
     const IS_OBJECT = "checkIsObject";
     const IS_OBJECT_OR_ARRAY = "checkIsObjectOrArray";
     const IS_VALID_JSON = "checkIsValidJsonString";
-
     public const FILTER_ENCODE_HTML = "filterEncodeHtml";
     public const FILTER_STRIP_HTML = "filterStripHtml";
-    
     const CUSTOM = 'checkCustom';
 }

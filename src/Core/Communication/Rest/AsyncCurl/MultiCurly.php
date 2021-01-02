@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Communication\Rest\AsyncCurl;
@@ -13,15 +14,14 @@ class MultiCurly
      * @var array
      */
     private static $jobs = array();
-    
-    /**
+/**
      * Clears all jobs
      */
     public static function clearJobs()
     {
         static::$jobs = array();
     }
-    
+
     /**
      *
      * @param CurlJob $job
@@ -30,7 +30,7 @@ class MultiCurly
     {
         static::$jobs[] = $job;
     }
-    
+
     /**
      *
      * @return array
@@ -39,7 +39,7 @@ class MultiCurly
     {
         return static::$jobs;
     }
-    
+
     /**
      * Runs the given jobs and returns them in an array. The results will be within
      * the CurlJob object.
@@ -50,13 +50,11 @@ class MultiCurly
     {
         // Multihandle
         $mh = curl_multi_init();
-        
-        // Curlhandle
+// Curlhandle
         $ch = array();
-        
-        // Jobs
+// Jobs
         $jobs = static::getJobs();
-        
+
         for ($i = 0; $i < count($jobs); $i++) {
             $job = $jobs[$i];
             if ($job instanceof CurlJob) {
@@ -64,23 +62,21 @@ class MultiCurly
                 curl_multi_add_handle($mh, $ch[$i]);
             }
         }
-        
+
         $execReturnValue = null;
         $runningHandles = 0;
-        
         do {
             $execReturnValue = curl_multi_exec($mh, $runningHandles);
         } while ($execReturnValue == CURLM_CALL_MULTI_PERFORM);
-        
-        // Loop and continue processing the request
+// Loop and continue processing the request
         while ($runningHandles && ($execReturnValue == CURLM_OK || $execReturnValue == CURLM_CALL_MULTI_PERFORM)) {
             usleep(1);
-            // Wait forever for network
+// Wait forever for network
             $numberReady = curl_multi_select($mh);
             if ($numberReady == -1) {
                 usleep(100000);
             }
-            
+
             if ($execReturnValue >= CURLM_CALL_MULTI_PERFORM) {
                 do {
                     $execReturnValue = curl_multi_exec($mh, $runningHandles);
@@ -88,12 +84,12 @@ class MultiCurly
                 } while ($execReturnValue == CURLM_CALL_MULTI_PERFORM);
             }
         }
-        
+
         // Check for any errors
         if ($execReturnValue != CURLM_OK) {
             trigger_error("Curl multi read error $execReturnValue\n", E_USER_WARNING);
         }
-        
+
         // Extract the content
         for ($i = 0; $i < count($jobs); $i++) {
             $curlError = curl_error($ch[$i]);
@@ -105,9 +101,8 @@ class MultiCurly
             curl_multi_remove_handle($mh, $ch[$i]);
             curl_close($ch[$i]);
         }
-        
-        curl_multi_close($mh);
 
+        curl_multi_close($mh);
         return $jobs;
     }
 }

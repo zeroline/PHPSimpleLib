@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -13,28 +14,24 @@ class HttpController extends Controller
     const CONTENT_TYPE_HTML = 'text/html';
     const CONTENT_TYPE_JSON = 'application/json';
     const CONTENT_TYPE_TEXT_PLAIN_JWT = 'text/plain';
-
     const JSON_META_RESPONSE_KEYWORD = '_meta';
-
     const VIEW_FOLDER_NAME = 'View';
     const VIEW_ASSET_FOLDER_NAME = "Assets";
     const VIEW_ASSET_VAR_NAME = 'assetFolder';
     const VIEW_FOLDER_VAR_NAME = 'viewFolder';
     const VIEW_FILE_EXTENSION = '.php';
-
-    /**
+/**
      * Set the HTTP response code on response
      *
      * @var boolean
      */
     protected $useHTTPResponseCode = true;
-
-    /**
+/**
      * See function name
      *
      * @return void
      */
-    public function overrideSendingAValidHTTPResponseCodeBecauseTheFetchAPIIsBullshitAndCORSIsAPainInTheAss() : void
+    public function overrideSendingAValidHTTPResponseCodeBecauseTheFetchAPIIsBullshitAndCORSIsAPainInTheAss(): void
     {
         $this->useHTTPResponseCode = false;
     }
@@ -53,7 +50,7 @@ class HttpController extends Controller
         }
         return $fallback;
     }
-    
+
     /**
      * Returns a post variable
      *
@@ -68,17 +65,17 @@ class HttpController extends Controller
         }
         return $fallback;
     }
-    
+
     /**
      * Returns the plain request body
      *
      * @return string
      */
-    public function body() : string
+    public function body(): string
     {
         return file_get_contents('php://input');
     }
-    
+
     /**
      * Returns the interpreted json request body.
      * If the json is invalid an exception will be thrown.
@@ -93,7 +90,7 @@ class HttpController extends Controller
         }
         return $result;
     }
-    
+
     /**
      * Returns the request json body as a DataContainer object.
      * If the json is invalid an exception will be thrown within
@@ -101,23 +98,24 @@ class HttpController extends Controller
      *
      * @return DataContainer
      */
-    public function getBodyDataContainer() : DataContainer
+    public function getBodyDataContainer(): DataContainer
     {
         return new DataContainer($this->jsonBody());
     }
 
     /**
-     * 
-     * @param string $key 
-     * @return mixed 
+     *
+     * @param string $key
+     * @return mixed
      */
-    public function getHeader(string $key) {
+    public function getHeader(string $key)
+    {
         if (isset($_SERVER) && array_key_exists($key, $_SERVER)) {
             return $_SERVER[$key];
         }
         return null;
     }
-    
+
     /**
      * Return a custom header
      * Auto-replaces - with _, ups all letters and
@@ -130,7 +128,6 @@ class HttpController extends Controller
     {
         //auto prepend HTTP
         $key = str_replace('-', '_', strtoupper('HTTP_' . $key));
-
         if (isset($_SERVER) && array_key_exists($key, $_SERVER)) {
             return $_SERVER[$key];
         }
@@ -156,15 +153,17 @@ class HttpController extends Controller
      * @param string $type
      * @return void
      */
-    public function contentHeader(string $type = self::CONTENT_TYPE_HTML) : void
+    public function contentHeader(string $type = self::CONTENT_TYPE_HTML): void
     {
         switch ($type) {
             case self::CONTENT_TYPE_JSON:
-                header("Content-Type: application/json; charset=utf-8", true);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               header("Content-Type: application/json; charset=utf-8", true);
+
                 break;
             case self::CONTENT_TYPE_TEXT_PLAIN_JWT:
-                header("Content-Type: text/plain; charset=utf-8", true);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               header("Content-Type: text/plain; charset=utf-8", true);
                 header("Content-Transfer-Encoding: base64", true);
+
                 break;
             case self::CONTENT_TYPE_HTML:
             default:
@@ -181,29 +180,25 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function view(array $data = array(), int $code = 200) : string
+    public function view(array $data = array(), int $code = 200): string
     {
         if ($this->useHTTPResponseCode) {
             http_response_code($code);
         }
-        
-        $this->contentHeader(self::CONTENT_TYPE_HTML);
 
+        $this->contentHeader(self::CONTENT_TYPE_HTML);
         $assetFolder = Autoloader::classToDirectory(get_called_class()) . '..' . DIRECTORY_SEPARATOR . self::VIEW_ASSET_FOLDER_NAME . DIRECTORY_SEPARATOR;
         $data[self::VIEW_ASSET_VAR_NAME] = $assetFolder;
-
         $viewFolder = Autoloader::classToDirectory(get_called_class()) . '..' . DIRECTORY_SEPARATOR . self::VIEW_FOLDER_NAME . DIRECTORY_SEPARATOR;
         $data[self::VIEW_FOLDER_VAR_NAME] = $viewFolder;
-
         $viewFile = $viewFolder . $this->getSimplifiedControllerName() . DIRECTORY_SEPARATOR . $this->methodToCall . self::VIEW_FILE_EXTENSION;
-        
         if (file_exists($viewFile)) {
             return Renderer::renderFile($viewFile, $data);
         } else {
             throw new \Exception('View file "' . $viewFile . '" not found.');
         }
     }
-    
+
     /**
      * Generic json response
      * Switches the content type to json
@@ -215,14 +210,13 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function response($data, bool $success, string $message, int $code) : string
+    public function response($data, bool $success, string $message, int $code): string
     {
         if ($this->useHTTPResponseCode) {
             http_response_code($code);
         }
         $this->contentHeader(self::CONTENT_TYPE_JSON);
-
-        /*
+/*
         $response = array_reverse(array_merge(array(self::JSON_META_RESPONSE_KEYWORD => array(
                 'success' => (boolean)$success,
                 'error' => (boolean)!$success,
@@ -233,7 +227,6 @@ class HttpController extends Controller
         )), (array)json_decode(json_encode($data))));
         */
         $response = HttpResponseBuilder::buildBasicResponseArray($data, $success, $message, $code);
-
         return json_encode($response);
     }
 
@@ -246,7 +239,7 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function responseSuccess($data = array(), string $message = '', int $code = 200) : string
+    public function responseSuccess($data = array(), string $message = '', int $code = 200): string
     {
         return $this->response($data, true, $message, $code);
     }
@@ -260,7 +253,7 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function responseError($data = array(), string $message = '', int $code = 500) : string
+    public function responseError($data = array(), string $message = '', int $code = 500): string
     {
         return $this->response($data, false, $message, $code);
     }
@@ -273,7 +266,7 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function responseAccessDenied(string $message = 'Access denied', int $code = 403) : string
+    public function responseAccessDenied(string $message = 'Access denied', int $code = 403): string
     {
         return $this->response(array(), false, $message, $code);
     }
@@ -286,7 +279,7 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function responseNotFound(string $message = 'Rest endpoint not found', int $code = 404) : string
+    public function responseNotFound(string $message = 'Rest endpoint not found', int $code = 404): string
     {
         return $this->response(array(), false, $message, $code);
     }
@@ -301,13 +294,10 @@ class HttpController extends Controller
      * @param integer $code
      * @return string
      */
-    public function responseInvalidData(array $validationErrors = array(), array $data = array(), string $message = 'Invalid input', int $code = 422) : string
+    public function responseInvalidData(array $validationErrors = array(), array $data = array(), string $message = 'Invalid input', int $code = 422): string
     {
-        return $this->response(array_merge(
-            array(
+        return $this->response(array_merge(array(
                 'validationErrors' => $validationErrors
-            ),
-            $data
-        ), false, $message, $code);
+            ), $data), false, $message, $code);
     }
 }

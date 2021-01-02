@@ -1,6 +1,7 @@
 <?php
 
 namespace PHPSimpleLib\Modules\JobManagement\Model;
+
 ;
 
 use PHPSimpleLib\Core\Data\DatabaseAbstractionModel;
@@ -22,9 +23,9 @@ class JobTypeModel extends DatabaseAbstractionModel
     }
 
     protected $ignoreFieldsOnSerialization = array(
-        
+
     );
-    
+
     protected $fieldsForValidation = array(
         'name' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -52,41 +53,49 @@ class JobTypeModel extends DatabaseAbstractionModel
             EnumValidatorRules::IS_NUMBER => array(),
         )
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
-    public function getConfiguration() : string {
+    public function getConfiguration(): string
+    {
         return $this->configuration;
     }
 
-    public function getConfigurationObject() {
+    public function getConfigurationObject()
+    {
         return json_decode($this->getConfiguration());
     }
 
-    public function setConfiguration($config) : void {
-        if(!is_array($config) || !is_object($config)) {
+    public function setConfiguration($config): void
+    {
+        if (!is_array($config) || !is_object($config)) {
             throw new \Exception('Invalid format');
         }
         $this->configuration = json_encode($config);
     }
 
-    public function getRetryDelay(): ?int {
+    public function getRetryDelay(): ?int
+    {
         return $this->retryDelay;
     }
 
-    public function getMaxRetries(): ?int {
+    public function getMaxRetries(): ?int
+    {
         return $this->maxRetries;
     }
 
-    public function getLocator() : string {
+    public function getLocator(): string
+    {
         return $this->locator;
     }
 
-    public function getMode() : int {
+    public function getMode(): int
+    {
         return $this->mode;
     }
 
-    public function getName() : string {
+    public function getName(): string
+    {
         return $this->name;
     }
 }

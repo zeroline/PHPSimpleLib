@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\ObjectFactory;
@@ -11,8 +12,7 @@ final class AnnotationParser
     const INJECTION_PARAMETER_SINGLETON = 'Singleton';
     const INJECTION_PARAMETER_INSTANCE = 'Instance';
     const INJECTION_PARAMETER_OPTIONS = 'Options';
-        
-    /**
+/**
      *
      * @param string $comment
      * @return arra
@@ -23,7 +23,6 @@ final class AnnotationParser
         $endPattern = "[ ]*(?:@|\r\n|\n)";
         $pattern = "/@(?=(.*)" . $endPattern . ")/U";
         $foundParameter = array();
-
         preg_match_all($pattern, $comment, $matches);
         foreach ($matches[1] as $rowMatch) {
             if (preg_match("/^(" . $keyPattern . ") (.*)$/", $rowMatch, $match)) {
@@ -41,7 +40,7 @@ final class AnnotationParser
         }
         return $foundParameter;
     }
-    
+
     /**
      *
      * @param string $name
@@ -79,11 +78,12 @@ final class AnnotationParser
         $props_arr = array();
         foreach ($props as $prop) {
             $f = $prop->getName();
-            //$props_arr[$f] = $prop;
+        //$props_arr[$f] = $prop;
             $props_arr[] = $prop;
         }
         if (($parentClass = $ref->getParentClass())) {
-            $parent_props_arr = static::getClassProperties(new \ReflectionClass($parentClass->getName()));//RECURSION
+            $parent_props_arr = static::getClassProperties(new \ReflectionClass($parentClass->getName()));
+//RECURSION
             if (count($parent_props_arr) > 0) {
                 $props_arr = array_merge($parent_props_arr, $props_arr);
             }
@@ -99,7 +99,6 @@ final class AnnotationParser
     {
         $reflection = new \ReflectionObject($object);
         $properties = static::getClassProperties($reflection);
-
         foreach ($properties as $property) {
             $property->setAccessible(true);
             if (!is_null($property->getValue($object))) {
@@ -112,10 +111,10 @@ final class AnnotationParser
                 $optionString = static::resolveParamterValueFromDocComment(self::INJECTION_PARAMETER_OPTIONS, $comment);
                 $options = explode(',', trim(str_replace(array('(',')'), array('',''), $optionString)));
             }
-            
+
             if (static::hasParameter(self::INJECTION_PARAMETER, $comment)) {
-                // Do some magic.
-                // Check if it is a class
+            // Do some magic.
+            // Check if it is a class
                 $value = static::resolveParamterValueFromDocComment(self::INJECTION_PARAMETER, $comment);
                 if (strpos($value, '\\') !== false) {
                     $property->setValue($object, ObjectFactory::singleton($value, $options));

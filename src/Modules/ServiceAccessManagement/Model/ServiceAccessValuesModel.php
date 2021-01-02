@@ -16,9 +16,9 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
     }
 
     protected $ignoreFieldsOnSerialization = array(
-        
+
     );
-    
+
     protected $fieldsForValidation = array(
         'serviceaccessid' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -29,7 +29,7 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
             EnumValidatorRules::STR_MAX => array(255),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
     /**
@@ -37,7 +37,7 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getServiceAccessId() : int
+    public function getServiceAccessId(): int
     {
         return $this->serviceaccessid;
     }
@@ -47,7 +47,7 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
      *
      * @return ServiceAccessModel
      */
-    public function getServiceAccess() : ServiceAccessModel
+    public function getServiceAccess(): ServiceAccessModel
     {
         return ServiceAccessModel::findOneById($this->getServiceAccessId());
     }
@@ -57,7 +57,7 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -67,7 +67,7 @@ class ServiceAccessValuesModel extends DatabaseAbstractionModel
      *
      * @return string
      */
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->content;
     }

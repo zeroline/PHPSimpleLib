@@ -99,7 +99,7 @@ abstract class WebSocketServer
   /**
    * Main processing loop
   */
-    public function run() : void
+    public function run(): void
     {
         while (true) {
             if (empty($this->sockets)) {
@@ -174,14 +174,14 @@ abstract class WebSocketServer
     protected function disconnect($socket, $triggerClosed = true, $sockErrNo = null)
     {
         $disconnectedUser = $this->getUserBySocket($socket);
-    
+
         if ($disconnectedUser !== null) {
             unset($this->users[$disconnectedUser->id]);
-        
+
             if (array_key_exists($disconnectedUser->id, $this->sockets)) {
                 unset($this->sockets[$disconnectedUser->id]);
             }
-      
+
             if (!is_null($sockErrNo)) {
                 socket_clear_error($socket);
             }
@@ -373,7 +373,7 @@ abstract class WebSocketServer
         }
         return chr($b1) . chr($b2) . $lengthField . $message;
     }
-  
+
   //check packet if he have more than one frame and process each frame individually
     protected function splitPacket($length, $packet, $user)
     {
@@ -390,7 +390,7 @@ abstract class WebSocketServer
             $headers = $this->extractHeaders($packet);
             $headers_size = $this->calcoffset($headers);
             $framesize = $headers['length'] + $headers_size;
-      
+
           //split frame from packet and process it
             $frame = substr($fullpacket, $frame_pos, $framesize);
             if (($message = $this->deframe($frame, $user, $headers)) !== false) {
@@ -456,7 +456,7 @@ abstract class WebSocketServer
         return $this->deframe($message, $user);
       }
       */
-    
+
         if ($this->checkRSVBits($headers, $user)) {
             return false;
         }
@@ -583,7 +583,7 @@ abstract class WebSocketServer
         }
         return $strout . "\n";
     }
-  
+
     protected function printHeaders($headers)
     {
         echo "Array\n(\n";

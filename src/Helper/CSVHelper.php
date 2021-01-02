@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -8,15 +9,13 @@ class CSVHelper
     public static function build(array $columns, array $data, array $functions = array(), array $ignore = array(), $filename = 'Export.csv', $capsule = '"', $seperator = ';', $lineend = PHP_EOL, array $extraFunctions = array())
     {
         $csv_content = "";
-
         $deepDataIndicator = '.';
-        
         if (count($data) == 0) {
             return chr(255) . chr(254) . mb_convert_encoding($csv_content, "UCS-2LE", "auto");
         }
-        
+
         if (sizeof($columns) == 0) {
-            //Deep data
+//Deep data
             foreach ($data[0] as $key => $value) {
                 if (in_array($key, $columns)) {
                     continue;
@@ -24,7 +23,7 @@ class CSVHelper
                 if (in_array($key, $ignore)) {
                     continue;
                 }
-                
+
                 //Deep data
                 if (is_object($value)) {
                     foreach ($value as $subKey => $subValue) {
@@ -41,20 +40,18 @@ class CSVHelper
                 }
             }
         }
-        
+
         $csv_content .= implode($seperator, array_values($columns)) . $lineend;
-        
-        //Collection data
+//Collection data
         foreach ($data as $event) {
             $row = array();
             $event = (object)$event;
-            
             foreach ($columns as $column => $title) {
                 if (in_array($column, $ignore)) {
                     continue;
                 }
                 //$row[$column] = null;
-                
+
                 if (array_key_exists($column, $functions)) {
                     $row[] = $capsule . $functions[$column]($event->{$column}) . $capsule;
                 } elseif (array_key_exists($column, $extraFunctions)) {
@@ -62,7 +59,7 @@ class CSVHelper
                     $row[] = $funcData[1]($event->{$funcData[0]});
                 } else {
                     if (strpos($column, $deepDataIndicator) !== false) {
-                        list($firstKey, $secondKey) = explode($deepDataIndicator, $column);
+                                list($firstKey, $secondKey) = explode($deepDataIndicator, $column);
                         if (isset($event->{$firstKey}->{$secondKey})) {
                             $row[] = $capsule . $event->{$firstKey}->{$secondKey} . $capsule;
                         } else {
@@ -81,7 +78,7 @@ class CSVHelper
         }
         return chr(255) . chr(254) . mb_convert_encoding($csv_content, "UCS-2LE", "auto");
     }
-    
+
     public static function download(array $columns, array $data, array $functions = array(), array $ignore = array(), $filename = 'Export.csv', $capsule = '"', $seperator = ';', $lineend = PHP_EOL, array $extraFunctions = array())
     {
         header('Content-Type: text/x-csv');
@@ -89,7 +86,7 @@ class CSVHelper
         echo static::build($columns, $data, $functions, $ignore, $filename, $capsule, $seperator, $lineend, $extraFunctions);
         exit;
     }
-    
+
     public static function save(array $columns, array $data, array $functions = array(), array $ignore = array(), $filename = 'Export.csv', $capsule = '"', $seperator = ';', $lineend = PHP_EOL, array $extraFunctions = array())
     {
         file_put_contents($filename, static::build($columns, $data, $functions, $ignore, $filename, $capsule, $seperator, $lineend, $extraFunctions));

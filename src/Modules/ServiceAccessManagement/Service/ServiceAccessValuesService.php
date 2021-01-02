@@ -15,7 +15,7 @@ final class ServiceAccessValuesService
      * @param integer $id
      * @return ServiceAccessValuesModel|null
      */
-    public static function findById(int $id) : ?ServiceAccessValuesModel
+    public static function findById(int $id): ?ServiceAccessValuesModel
     {
         return ServiceAccessValuesModel::findOneById($id);
     }
@@ -28,7 +28,7 @@ final class ServiceAccessValuesService
      * @param string $content
      * @return ModelPersistResult
      */
-    public static function addValueToServiceAccess(ServiceAccessModel $serviceAccess, string $name, string $content = "") : ModelPersistResult
+    public static function addValueToServiceAccess(ServiceAccessModel $serviceAccess, string $name, string $content = ""): ModelPersistResult
     {
         $model = new ServiceAccessValuesModel(array(
             'serviceaccessid' => $serviceAccess->getId(),
@@ -46,7 +46,7 @@ final class ServiceAccessValuesService
      * @param string $value
      * @return ModelPersistResult
      */
-    public static function updateValue(ServiceAccessValuesModel $accessValuesModel, string $content) : ModelPersistResult
+    public static function updateValue(ServiceAccessValuesModel $accessValuesModel, string $content): ModelPersistResult
     {
         $accessValuesModel->content = $content;
         return static::saveModel($accessValuesModel);
@@ -58,7 +58,7 @@ final class ServiceAccessValuesService
      * @param ServiceAccessValuesModel $accessValuesModel
      * @return boolean
      */
-    public static function removeValue(ServiceAccessValuesModel $accessValuesModel) : bool
+    public static function removeValue(ServiceAccessValuesModel $accessValuesModel): bool
     {
         return $accessValuesModel->delete();
     }
@@ -68,7 +68,7 @@ final class ServiceAccessValuesService
      * @param ServiceAccessValuesModel $model
      * @return ModelPersistResult
      */
-    private static function saveModel(ServiceAccessValuesModel $model) : ModelPersistResult
+    private static function saveModel(ServiceAccessValuesModel $model): ModelPersistResult
     {
         if ($model->validateAndSave()) {
             return new ModelPersistResult(true, $model);

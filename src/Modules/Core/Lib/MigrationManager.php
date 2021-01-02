@@ -18,7 +18,7 @@ final class MigrationManager
      *
      * @return array
      */
-    public static function getMigrationFiles() : array
+    public static function getMigrationFiles(): array
     {
         $result = array();
 
@@ -26,7 +26,7 @@ final class MigrationManager
         $moduleNames = $moduleManager->getModuleNames();
 
         asort($moduleNames);
-        
+
         foreach ($moduleNames as $moduleName) {
             $result[$moduleName] = self::getMigrationFilesForModule($moduleName);
         }
@@ -40,7 +40,7 @@ final class MigrationManager
      * @param string $moduleName
      * @return array
      */
-    public static function getMigrationFilesForModule(string $moduleName) : array
+    public static function getMigrationFilesForModule(string $moduleName): array
     {
         $result = array();
 
@@ -64,7 +64,7 @@ final class MigrationManager
      * @param string $connectionName
      * @return array
      */
-    public static function getNonMigratedFilesInModules(string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : array
+    public static function getNonMigratedFilesInModules(string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): array
     {
         $all = self::getMigrationFiles();
         $result = array();
@@ -96,7 +96,7 @@ final class MigrationManager
      * @param string $connectionName
      * @return boolean
      */
-    public static function checkForTableExsistence(string $tableName, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : bool
+    public static function checkForTableExsistence(string $tableName, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): bool
     {
         $connectionManager = DBConnectionManager::getInstance();
         $connection = $connectionManager->getConnection($connectionName)->getConnection();
@@ -113,7 +113,7 @@ final class MigrationManager
      * @param string $connectionName
      * @return boolean
      */
-    public static function init(string $moduleName = 'Core', string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : bool
+    public static function init(string $moduleName = 'Core', string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): bool
     {
         $moduleManager = ModuleManager::getInstance();
         $modulePath = $moduleManager->getModulePath($moduleName);
@@ -154,7 +154,7 @@ final class MigrationManager
      *
      * @throws \Exception on missing tables, file or execution failures
      */
-    public static function migrate(string $moduleName, string $migrationFile, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : bool
+    public static function migrate(string $moduleName, string $migrationFile, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): bool
     {
         if (!self::checkForTableExsistence(MigrationStatusModel::TABLE_NAME, $connectionName)) {
             throw new \Exception("For the given db connection the migration status table is missing.");
@@ -201,7 +201,7 @@ final class MigrationManager
      *
      * @throws \Exception if the migration table is missing
      */
-    public static function getLastMigration(string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : ?MigrationStatusModel
+    public static function getLastMigration(string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): ?MigrationStatusModel
     {
         if (!self::checkForTableExsistence(MigrationStatusModel::TABLE_NAME, $connectionName)) {
             throw new \Exception("For the given db connection the migration status table is missing.");
@@ -216,7 +216,7 @@ final class MigrationManager
      * @param string $migrationFile
      * @return boolean
      */
-    public static function migrationFileExists(string $moduleName, string $migrationFile) : bool
+    public static function migrationFileExists(string $moduleName, string $migrationFile): bool
     {
         $moduleManager = ModuleManager::getInstance();
         $modulePath = $moduleManager->getModulePath($moduleName);
@@ -235,7 +235,7 @@ final class MigrationManager
      * @param string $connectionName
      * @return boolean
      */
-    public static function hasFileBeenMigrated(string $moduleName, string $migrationFile, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME) : bool
+    public static function hasFileBeenMigrated(string $moduleName, string $migrationFile, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): bool
     {
         if (!self::checkForTableExsistence(MigrationStatusModel::TABLE_NAME, $connectionName)) {
             throw new \Exception("For the given db connection the migration status table is missing.");

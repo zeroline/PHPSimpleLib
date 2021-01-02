@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Event;
@@ -9,21 +10,22 @@ class Mediator
 {
     use Singleton;
 
-    /**
+/**
      * Store all events with handlers
      *
      * @var array
      */
-    private $events = array();
 
-    /**
+
+    private $events = array();
+/**
      * Trigger one specific event
      *
      * @param string $eventName
      * @param EventArgs $args
      * @return void
      */
-    public function trigger(string $eventName, EventArgs $args = null) : void
+    public function trigger(string $eventName, EventArgs $args = null): void
     {
         if (is_null($args)) {
             $args = EventArgs::empty();
@@ -31,11 +33,11 @@ class Mediator
 
         if (array_key_exists($eventName, $this->events)) {
             foreach ($this->events[$eventName] as $eventHandler) {
-                //$eventHandler($args);
+            //$eventHandler($args);
                 call_user_func_array($eventHandler, array($args));
             }
         } else {
-            // Do not throw an exception or else.
+        // Do not throw an exception or else.
             // There could be no handled events at some point.
         }
     }
@@ -47,7 +49,7 @@ class Mediator
      * @param callable $eventHandler
      * @return void
      */
-    public function on(string $eventName, callable $eventHandler) : void
+    public function on(string $eventName, callable $eventHandler): void
     {
         if (!array_key_exists($eventName, $this->events)) {
             $this->events[$eventName] = array();

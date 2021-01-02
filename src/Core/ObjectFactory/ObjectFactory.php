@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\ObjectFactory;
@@ -13,8 +14,7 @@ class ObjectFactory
      * @var array
      */
     private static $instances = array();
-    
-    /**
+/**
      *
      * @param string $class
      * @param boolean $enableAnnotations
@@ -23,14 +23,13 @@ class ObjectFactory
     public static function create($class, array $args = array(), $enableAnnotations = true)
     {
             $reflector = new \ReflectionClass($class);
-            $instance = $reflector->newInstanceArgs($args);
-
+        $instance = $reflector->newInstanceArgs($args);
         if ($enableAnnotations) {
-                AnnotationParser::injectClassesAndComponentsIntoObject($instance);
+            AnnotationParser::injectClassesAndComponentsIntoObject($instance);
         }
             return $instance;
     }
-    
+
     /**
      *
      * @param string $class
@@ -44,7 +43,7 @@ class ObjectFactory
         } elseif (!array_key_exists($class, static::$instances)) {
             static::$instances[$class] = static::create($class, $args, $enableAnnotations);
         }
-            
+
             return static::$instances[$class];
     }
 }

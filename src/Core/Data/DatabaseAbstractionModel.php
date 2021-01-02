@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Data;
@@ -11,65 +12,54 @@ use PHPSimpleLib\Core\Event\EventArgs;
 class DatabaseAbstractionModel extends ValidatedModel
 {
     public const CONVENTION_NAMING_SUFFIX = 'Model';
-
     public const CONNECT_TYPE_SIMPLE = "CSIMPLE";
     public const CONNECT_TYPE_COMPLEX = "CCOMPLEX";
-
     public const EVENT_CREATED = 'created';
     public const EVENT_CHANGED = 'changed';
     public const EVENT_DELETED = 'deleted';
-
-    /**
+/**
      *
      * @var string
      */
     protected $tableName = '';
-
-    /**
+/**
      *
      * @var string
      */
     protected $idColumn = 'id';
-
-    /**
+/**
      * @var \PHPSimpleLib\Core\Data\GenericRepository
      */
     protected static $searchRepository = null;
-
-    /**
+/**
      *
      * @var \PHPSimpleLib\Core\Event\Mediator
      */
     protected $mediator = null;
-
-    /**
+/**
      * Store field info for joining
      *
      * @var array
      */
     protected $fieldConnectStatements = array();
-
-    /**
+/**
      * Handle joins
      *
      * @var array
      */
     protected $connectedData = array();
-
-    /**
+/**
      *
      * @var array
      */
     protected $useStdFields = array();
-
-    /**
+/**
      * Stores single fetched models, that came over findOneById
      *
      * @var array
      */
     protected static $singleModelCache = array();
-
-    /**
+/**
      * stores one model in the static cache
      *
      * @param string $class
@@ -129,16 +119,14 @@ class DatabaseAbstractionModel extends ValidatedModel
     public function __construct($data = null)
     {
         parent::__construct($data);
-
         $this->mediator = Mediator::getInstance();
-
         if (empty($this->tableName)) {
             $classNamePartials = explode('\\', get_called_class());
             $simplifiedClassName = $classNamePartials[count($classNamePartials) - 1];
             $this->tableName = strtolower(str_replace(self::CONVENTION_NAMING_SUFFIX, '', $simplifiedClassName));
         }
 
-        if($this->getFilterMode() === EnumFilterModes::FILTER_MODE_AFTER_AFTER_FETCH || $this->getFilterMode() === EnumFilterModes::FILTER_MODE_BOTH) {
+        if ($this->getFilterMode() === EnumFilterModes::FILTER_MODE_AFTER_AFTER_FETCH || $this->getFilterMode() === EnumFilterModes::FILTER_MODE_BOTH) {
             $this->filter();
         }
     }
@@ -290,7 +278,6 @@ class DatabaseAbstractionModel extends ValidatedModel
             $foreignFieldName = $connectData['foreignFieldName'];
             $connectType = $connectData['connectType'];
             $ownFieldName = $connectData['ownFieldName'];
-
             if ($connectType === self::CONNECT_TYPE_SIMPLE) {
                 $modelClass::repository()->where($foreignFieldName, $this->{$ownFieldName});
                 $this->connectedData[$fieldName] = $modelClass::repository()->read();
@@ -301,7 +288,7 @@ class DatabaseAbstractionModel extends ValidatedModel
                 $rightIdColumn = $connectData['rightIdColumn'];
                 $leftIdColumn = $connectData['leftIdColumn'];
                 $this->connectedData[$fieldName] = $modelClass::repository()->readRaw('SELECT ' . $targetTableName . '.* FROM ' . $targetTableName . ' JOIN ' . $connectionTableName . ' ON ' . $connectionTableName . '.' . $rightIdColumn . '=' . $targetTableName . '.' . $foreignFieldName . ' WHERE ' . $connectionTableName . '.' . $leftIdColumn . '=' . $this->{$ownFieldName});
-                // SELECT role.* FROM role JOIN user_role ON user_role.roleid = role.id WHERE user_role.userid = 2
+            // SELECT role.* FROM role JOIN user_role ON user_role.roleid = role.id WHERE user_role.userid = 2
                 // SELECT [targetTableName].* FROM [targetTableName] JOIN [connectionTableName] ON [connectionTableName].[rightIdColumn] = [targetTableName].[foreignFieldName] WHERE [connectionTableName].[leftIdColumn] = [this].[ownFieldName]
             }
         }
@@ -342,10 +329,8 @@ class DatabaseAbstractionModel extends ValidatedModel
         $repository->clearConditions();
         $repository->setTable($this->getTableName());
         $repository->setConnection($connectionName);
-
         $this->handleAutomaticFieldsOnSave();
-
-        if($this->getFilterMode() === EnumFilterModes::FILTER_MODE_BEFORE_SAVE || $this->getFilterMode() === EnumFilterModes::FILTER_MODE_BOTH) {
+        if ($this->getFilterMode() === EnumFilterModes::FILTER_MODE_BEFORE_SAVE || $this->getFilterMode() === EnumFilterModes::FILTER_MODE_BOTH) {
             $this->filter();
         }
 
@@ -359,7 +344,8 @@ class DatabaseAbstractionModel extends ValidatedModel
             }
         } else {
             if (count($this->getDirtyFields()) === 0) {
-                return true; // nothing to change
+                return true;
+        // nothing to change
             }
             $repository->where($this->idColumn, $this->getId());
             $result = $repository->update($this->getDirtyFields());
@@ -409,7 +395,6 @@ class DatabaseAbstractionModel extends ValidatedModel
         $repository->clearConditions();
         $repository->setTable($this->getTableName());
         $repository->setConnection($connectionName);
-
         if (!$this->isNew()) {
             $repository->where($this->idColumn, $this->getId());
             $clonedModel = clone $this;
@@ -437,7 +422,6 @@ class DatabaseAbstractionModel extends ValidatedModel
     public static function findOneById(int $id, bool $cache = true, string $connectionName = DBConnectionManager::DEFAULT_CONNECTION_NAME): ?DatabaseAbstractionModel
     {
         $c = get_called_class();
-
         if ($cache) {
             if (static::isModelInCache($c, $id)) {
                 return static::getModelFromCache($c, $id);
@@ -445,16 +429,12 @@ class DatabaseAbstractionModel extends ValidatedModel
         }
 
         $dummy = new $c();
-
         $repo = $c::getSearchRepository();
-
         $repo->clearConditions();
         $repo->setTable($dummy->getTableName());
         $repo->setConnection($connectionName);
-
         $repo->where($dummy->getIdColumn(), $id);
         $repo->limit(1);
-
         $rows = $repo->read();
         unset($dummy);
         if (count($rows) == 1) {
@@ -483,16 +463,13 @@ class DatabaseAbstractionModel extends ValidatedModel
     private static function getSearchRepository(): GenericRepository
     {
         $c = get_called_class();
-
         if (!isset($c::$searchRepository)) {
             $c::$searchRepository = GenericRepository::getInstance();
         }
         $dummy = new $c();
         $c::$searchRepository->setTable($dummy->getTableName());
         $c::$searchRepository->setModelClassName($c);
-
         unset($dummy);
-
         return $c::$searchRepository;
     }
 }

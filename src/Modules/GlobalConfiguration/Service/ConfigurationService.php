@@ -17,7 +17,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    private static function sectorExists(string $identifier) : bool
+    private static function sectorExists(string $identifier): bool
     {
         return (SectorModel::repository()->where('identifier', $identifier)->count() === 1);
     }
@@ -29,7 +29,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    private static function sectionExists(SectorModel $sector, string $identifier) : bool
+    private static function sectionExists(SectorModel $sector, string $identifier): bool
     {
         return (SectionModel::repository()->where('identifier', $identifier)->where('sectorid', $sector->getId())->count() === 1);
     }
@@ -41,7 +41,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    private static function sectionFieldExists(SectionModel $section, string $identifier) : bool
+    private static function sectionFieldExists(SectionModel $section, string $identifier): bool
     {
         return (SectionFieldModel::repository()->where('identifier', $identifier)->where('sectionid', $section->getId())->count() === 1);
     }
@@ -52,7 +52,7 @@ class ConfigurationService
      * @param string $identifier
      * @return SectorModel|null
      */
-    private static function getSectorByIdentifier(string $identifier) : ?SectorModel
+    private static function getSectorByIdentifier(string $identifier): ?SectorModel
     {
         return SectorModel::repository()->where('identifier', $identifier)->readOne();
     }
@@ -64,7 +64,7 @@ class ConfigurationService
      * @param string $identifier
      * @return SectionModel|null
      */
-    private static function getSectionByIdentifier(SectorModel $sector, string $identifier) : ?SectionModel
+    private static function getSectionByIdentifier(SectorModel $sector, string $identifier): ?SectionModel
     {
         return SectionModel::repository()->where('identifier', $identifier)->where('sectorid', $sector->getId())->readOne();
     }
@@ -76,7 +76,7 @@ class ConfigurationService
      * @param string $identifier
      * @return SectionFieldModel|null
      */
-    private static function getFieldByIdentifier(SectionModel $section, string $identifier) : ?SectionFieldModel
+    private static function getFieldByIdentifier(SectionModel $section, string $identifier): ?SectionFieldModel
     {
         return SectionFieldModel::repository()->where('identifier', $identifier)->where('sectionid', $section->getId())->readOne();
     }
@@ -109,7 +109,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    public static function createSection(SectorModel $sector, string $identifier) : bool
+    public static function createSection(SectorModel $sector, string $identifier): bool
     {
         $model = new SectionModel(array(
             'identifier' => $identifier,
@@ -132,7 +132,7 @@ class ConfigurationService
      * @param string|null $typeinformation
      * @return boolean
      */
-    private static function createOrUpdateField(SectionModel $section, string $identifier, ?string $content = null, ?string $typeinformation = null) : bool
+    private static function createOrUpdateField(SectionModel $section, string $identifier, ?string $content = null, ?string $typeinformation = null): bool
     {
         $model = null;
         if (self::sectionFieldExists($section, $identifier)) {
@@ -171,7 +171,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    private static function validateSectionIdentifierAgainstSchema(SectorModel $sector, string $identifier) : bool
+    private static function validateSectionIdentifierAgainstSchema(SectorModel $sector, string $identifier): bool
     {
         if (!is_null($sector->getSchema()) && !empty($sector->getSchema())) {
             $schemaArray = $sector->getSchemaArray();
@@ -193,7 +193,7 @@ class ConfigurationService
      * @param string|null $content
      * @return boolean
      */
-    private static function validateFieldAgainstSchema(SectionModel $section, string $identifier, ?string $content) : bool
+    private static function validateFieldAgainstSchema(SectionModel $section, string $identifier, ?string $content): bool
     {
         $sector = $section->getSector();
         if (!is_null($sector->getSchema()) && !empty($sector->getSchema())) {
@@ -225,7 +225,7 @@ class ConfigurationService
      * @param string $sectorIdentifier
      * @return array
      */
-    public static function getSectorConfig(string $sectorIdentifier) : array
+    public static function getSectorConfig(string $sectorIdentifier): array
     {
         $result = array();
 
@@ -242,7 +242,7 @@ class ConfigurationService
         return $result;
     }
 
-    
+
     /**
      * Returns a specific field model if found.
      *
@@ -251,7 +251,7 @@ class ConfigurationService
      * @param string $fieldIdentifier
      * @return SectionFieldModel|null
      */
-    public static function getField(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier) : ?SectionFieldModel
+    public static function getField(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier): ?SectionFieldModel
     {
         if (self::sectorExists($sectorIdentifier)) {
             $sector = self::getSectorByIdentifier($sectorIdentifier);
@@ -335,7 +335,7 @@ class ConfigurationService
      * @param string|null $schema
      * @return boolean
      */
-    public static function setConfig(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier, ?string $content = null, ?string $typeInformation = null, ?string $schema = null) : bool
+    public static function setConfig(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier, ?string $content = null, ?string $typeInformation = null, ?string $schema = null): bool
     {
         if (!self::sectorExists($sectorIdentifier)) {
             if (!self::createSector($sectorIdentifier, $schema)) {
@@ -368,7 +368,7 @@ class ConfigurationService
      * @param SectionFieldModel $field
      * @return boolean
      */
-    public static function deleteField(SectionFieldModel $field) : bool
+    public static function deleteField(SectionFieldModel $field): bool
     {
         return $field->delete();
     }
@@ -379,7 +379,7 @@ class ConfigurationService
      * @param SectionModel $section
      * @return boolean
      */
-    public static function deleteSection(SectionModel $section) : bool
+    public static function deleteSection(SectionModel $section): bool
     {
         return $section->delete();
     }
@@ -390,7 +390,7 @@ class ConfigurationService
      * @param SectorModel $sector
      * @return boolean
      */
-    public static function deleteSector(SectorModel $sector) : bool
+    public static function deleteSector(SectorModel $sector): bool
     {
         return $sector->delete();
     }
@@ -401,7 +401,7 @@ class ConfigurationService
      * @param string $identifier
      * @return boolean
      */
-    public static function deleteSectorByIdentifier(string $identifier) : bool
+    public static function deleteSectorByIdentifier(string $identifier): bool
     {
         if ($sector = self::getSectorByIdentifier($identifier)) {
             return self::deleteSector($sector);
@@ -416,7 +416,7 @@ class ConfigurationService
      * @param string $sectionIdentifier
      * @return boolean
      */
-    public static function deleteSectionByIdentifier(string $sectorIdentifier, string $sectionIdentifier) : bool
+    public static function deleteSectionByIdentifier(string $sectorIdentifier, string $sectionIdentifier): bool
     {
         if ($sector = self::getSectorByIdentifier($sectorIdentifier)) {
             if ($section = self::getSectionByIdentifier($sector, $sectionIdentifier)) {
@@ -434,7 +434,7 @@ class ConfigurationService
      * @param string $fieldIdentifier
      * @return boolean
      */
-    public static function deleteFieldByIdentifier(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier) : bool
+    public static function deleteFieldByIdentifier(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier): bool
     {
         if ($sector = self::getSectorByIdentifier($sectorIdentifier)) {
             if ($section = self::getSectionByIdentifier($sector, $sectionIdentifier)) {

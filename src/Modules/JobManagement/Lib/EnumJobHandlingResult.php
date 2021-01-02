@@ -2,7 +2,8 @@
 
 namespace PHPSimpleLib\Modules\JobManagement\Lib;
 
-final class EnumJobHandlingResult {
+final class EnumJobHandlingResult
+{
     /**
      * Indicates that everything is fine
      */

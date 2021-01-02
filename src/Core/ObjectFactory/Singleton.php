@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\ObjectFactory;
@@ -8,7 +9,6 @@ use PHPSimpleLib\Core\ObjectFactory\ObjectFactory as ObjectFactory;
 trait Singleton
 {
     public static $instances = array();
-
     public static function getInstance()
     {
         $c = get_called_class();

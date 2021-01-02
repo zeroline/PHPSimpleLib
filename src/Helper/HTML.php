@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -15,16 +16,15 @@ class HTML
     {
         $contents = file_get_contents($file);
         $base64 = base64_encode($contents);
-        
         if (is_null($mime)) {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file);
             finfo_close($finfo);
         }
-        
+
         return static::embeddedImageSourceFromData($mime, $base64);
     }
-    
+
     /**
      * Generates the img source string to embedd images
      *

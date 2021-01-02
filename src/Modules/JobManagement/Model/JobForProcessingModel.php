@@ -14,7 +14,8 @@ class JobForProcessingModel extends DatabaseAbstractionModel
         parent::__construct($data);
     }
 
-    public function getJob() : JobModel {
+    public function getJob(): JobModel
+    {
         return JobConsumerService::getJobById($this->jobId);
     }
 }

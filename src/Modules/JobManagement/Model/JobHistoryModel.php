@@ -1,6 +1,7 @@
 <?php
 
 namespace PHPSimpleLib\Modules\JobManagement\Model;
+
 ;
 
 use PHPSimpleLib\Core\Data\DatabaseAbstractionModel;
@@ -19,38 +20,43 @@ class JobHistoryModel extends DatabaseAbstractionModel
     }
 
     protected $ignoreFieldsOnSerialization = array(
-        
+
     );
-    
+
     protected $fieldsForValidation = array(
         'jobId' => array(
             EnumValidatorRules::REQUIRED => array(),
             EnumValidatorRules::IS_NUMBER => array(),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
-    public function getJobId() : int {
+    public function getJobId(): int
+    {
         return $this->jobId;
     }
 
-    public function getJob() : JobModel {
-        if(is_null($this->cachedJob)) {
+    public function getJob(): JobModel
+    {
+        if (is_null($this->cachedJob)) {
             $this->cachedJob = JobConsumerService::getJobById($this->getJobId());
         }
         return $this->cachedJob;
     }
 
-    public function getMessage() : string {
+    public function getMessage(): string
+    {
         return $this->message;
     }
 
-    public function getAdditionalData() : string {
+    public function getAdditionalData(): string
+    {
         return $this->additionalData;
     }
 
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 }

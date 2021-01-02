@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Controlling;
@@ -46,7 +47,7 @@ class InternalHttpResponseMetaReader
      * @param mixed $responseObject
      * @return integer|null
      */
-    public static function getStatusCode($responseObject) : ?int
+    public static function getStatusCode($responseObject): ?int
     {
         return self::getSpecificMetaKey('statusCode', $responseObject);
     }
@@ -57,7 +58,7 @@ class InternalHttpResponseMetaReader
      * @param mixed $responseObject
      * @return boolean|null
      */
-    public static function getSuccessFlag($responseObject) : ?bool
+    public static function getSuccessFlag($responseObject): ?bool
     {
         return self::getSpecificMetaKey('success', $responseObject);
     }
@@ -68,7 +69,7 @@ class InternalHttpResponseMetaReader
      * @param mixed $responseObject
      * @return boolean|null
      */
-    public static function getErrorFlag($responseObject) : ?bool
+    public static function getErrorFlag($responseObject): ?bool
     {
         return self::getSpecificMetaKey('error', $responseObject);
     }
@@ -79,7 +80,7 @@ class InternalHttpResponseMetaReader
      * @param mixed $responseObject
      * @return string|null
      */
-    public static function getMessage($responseObject) : ?string
+    public static function getMessage($responseObject): ?string
     {
         return self::getSpecificMetaKey('message', $responseObject);
     }
@@ -90,7 +91,7 @@ class InternalHttpResponseMetaReader
      * @param mixed $responseObject
      * @return integer|null
      */
-    public static function getTimestamp($responseObject) : ?int
+    public static function getTimestamp($responseObject): ?int
     {
         return self::getSpecificMetaKey('timestamp', $responseObject);
     }

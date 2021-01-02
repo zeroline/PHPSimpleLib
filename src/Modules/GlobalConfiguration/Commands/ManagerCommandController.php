@@ -8,7 +8,7 @@ use PHPSimpleLib\Modules\GlobalConfiguration\Service\ConfigurationService;
 
 class ManagerCommandController extends CliController
 {
-    public function overviewAction() : void
+    public function overviewAction(): void
     {
         $sectors = SectorModel::repository()->read();
         foreach ($sectors as $sector) {
@@ -23,7 +23,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function updateAction(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier, string $value) : void
+    public function updateAction(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier, string $value): void
     {
         if (ConfigurationService::setConfig($sectorIdentifier, $sectionIdentifier, $fieldIdentifier, $value)) {
             $this->outLine('Field updated');
@@ -32,7 +32,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function deleteSectorAction(string $sectorIdentifier) : void
+    public function deleteSectorAction(string $sectorIdentifier): void
     {
         if (ConfigurationService::deleteSectorByIdentifier($sectorIdentifier)) {
             $this->outLine('Sector removed');
@@ -41,7 +41,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function deleteSectionAction(string $sectorIdentifier, string $sectionIdentifier) : void
+    public function deleteSectionAction(string $sectorIdentifier, string $sectionIdentifier): void
     {
         if (ConfigurationService::deleteSectionByIdentifier($sectorIdentifier, $sectionIdentifier)) {
             $this->outLine('Section removed');
@@ -50,7 +50,7 @@ class ManagerCommandController extends CliController
         }
     }
 
-    public function deleteFieldAction(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier) : void
+    public function deleteFieldAction(string $sectorIdentifier, string $sectionIdentifier, string $fieldIdentifier): void
     {
         if (ConfigurationService::deleteFieldByIdentifier($sectorIdentifier, $sectionIdentifier, $fieldIdentifier)) {
             $this->outLine('Field removed');

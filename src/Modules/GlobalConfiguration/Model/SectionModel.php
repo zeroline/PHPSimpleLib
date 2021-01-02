@@ -12,7 +12,7 @@ class SectionModel extends DatabaseAbstractionModel
     public function __construct($data = null)
     {
         parent::__construct($data);
-        
+
         $this->addAutomaticField('updated', function ($model) {
             $model->updated = date("Y-m-d H:i:s");
         });
@@ -24,9 +24,9 @@ class SectionModel extends DatabaseAbstractionModel
     }
 
     protected $ignoreFieldsOnSerialization = array(
-        
+
     );
-    
+
     protected $fieldsForValidation = array(
         'sectorid' => array(
             EnumValidatorRules::REQUIRED => array(),
@@ -37,35 +37,35 @@ class SectionModel extends DatabaseAbstractionModel
             EnumValidatorRules::STR_MAX => array(255),
         ),
     );
-    
+
     protected $fieldsForValidationScopes = array();
 
-    public function getSectorId() : int
+    public function getSectorId(): int
     {
         return $this->sectorid;
     }
 
-    public function setSectorId(int $sectorId) : void
+    public function setSectorId(int $sectorId): void
     {
         $this->sectorid = $sectorId;
     }
 
-    public function getIdentifier() : string
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    public function setIdentifier(string $identifier) : void
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    public function getSector() : ?SectorModel
+    public function getSector(): ?SectorModel
     {
         return SectorModel::findOneById($this->getSectorId());
     }
 
-    public function getFields() : array
+    public function getFields(): array
     {
         return SectionFieldModel::repository()->where('sectionid', $this->getId())->read();
     }

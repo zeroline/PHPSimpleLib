@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Filesystem;
@@ -16,7 +17,7 @@ class TempFile
     {
         $temp_file = tempnam(sys_get_temp_dir(), $prefix);
         if (file_put_contents($temp_file, $data)) {
-                return $temp_file;
+            return $temp_file;
         }
         return null;
     }

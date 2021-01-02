@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Security\JWT;
@@ -10,13 +11,10 @@ class JWT
 {
     private const HEADER_TYPE = "typ";
     private const HEADER_ALGORITHM = "alg";
-
     public const TYPE = "JWT";
-
     private $header = array();
     private $payload = array();
-
-    /**
+/**
      * Constructs a new object
      *
      * @param string $algorithm
@@ -36,7 +34,7 @@ class JWT
      *
      * @return string
      */
-    public function getAlgorithm() : string
+    public function getAlgorithm(): string
     {
         return $this->header[self::HEADER_ALGORITHM];
     }
@@ -46,7 +44,7 @@ class JWT
      *
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->header[self::HEADER_TYPE];
     }
@@ -57,7 +55,7 @@ class JWT
      * @param mixed $payload
      * @return void
      */
-    public function setPayload($payload) : void
+    public function setPayload($payload): void
     {
         $this->payload = $payload;
     }
@@ -78,7 +76,7 @@ class JWT
      * @param integer $notBefore
      * @return void
      */
-    public function setNotBefore(int $notBefore) : void
+    public function setNotBefore(int $notBefore): void
     {
         $this->getPayload()->nbf = $notBefore;
     }
@@ -88,7 +86,7 @@ class JWT
      *
      * @return integer|null
      */
-    public function getNotBefore() : ?int
+    public function getNotBefore(): ?int
     {
         return $this->getPayload()->nbf;
     }
@@ -99,7 +97,7 @@ class JWT
      * @param integer $issuedAt
      * @return void
      */
-    public function setIssuedAt(int $issuedAt) : void
+    public function setIssuedAt(int $issuedAt): void
     {
         $this->getPayload()->iat = $issuedAt;
     }
@@ -109,7 +107,7 @@ class JWT
      *
      * @return integer|null
      */
-    public function getIssuedAt() : ?int
+    public function getIssuedAt(): ?int
     {
         return $this->getPayload()->iat;
     }
@@ -120,7 +118,7 @@ class JWT
      * @param integer $expired
      * @return void
      */
-    public function setExpired(int $expired) : void
+    public function setExpired(int $expired): void
     {
         $this->getPayload()->exp = $expired;
     }
@@ -130,7 +128,7 @@ class JWT
      *
      * @return integer|null
      */
-    public function getExpired() : ?int
+    public function getExpired(): ?int
     {
         return $this->getPayload()->exp;
     }
@@ -141,7 +139,7 @@ class JWT
      * @param string $issuer
      * @return void
      */
-    public function setIssuer(string $issuer) : void
+    public function setIssuer(string $issuer): void
     {
         $this->getPayload()->iss = $issuer;
     }
@@ -151,7 +149,7 @@ class JWT
      *
      * @return string|null
      */
-    public function getIssuer() : ?string
+    public function getIssuer(): ?string
     {
         return $this->getPayload()->iss;
     }
@@ -162,7 +160,7 @@ class JWT
      * @param string $subject
      * @return void
      */
-    public function setSubject(string $subject) : void
+    public function setSubject(string $subject): void
     {
         $this->getPayload()->sub = $subject;
     }
@@ -172,7 +170,7 @@ class JWT
      *
      * @return string|null
      */
-    public function getSubject() : ?string
+    public function getSubject(): ?string
     {
         return $this->getPayload()->sub;
     }
@@ -183,7 +181,7 @@ class JWT
      * @param string $audience
      * @return void
      */
-    public function setAudience(string $audience) : void
+    public function setAudience(string $audience): void
     {
         $this->getPayload()->aud = $audience;
     }
@@ -193,7 +191,7 @@ class JWT
      *
      * @return string|null
      */
-    public function getAudience() : ?string
+    public function getAudience(): ?string
     {
         return $this->getPayload()->aud;
     }
@@ -204,7 +202,7 @@ class JWT
      * @param string $identifiedBy
      * @return void
      */
-    public function setIdentifiedBy(string $identifiedBy) : void
+    public function setIdentifiedBy(string $identifiedBy): void
     {
         $this->getPayload()->jti = $identifiedBy;
     }
@@ -214,7 +212,7 @@ class JWT
      *
      * @return string|null
      */
-    public function getIdentifiedBy() : ?string
+    public function getIdentifiedBy(): ?string
     {
         return $this->getPayload()->jti;
     }
@@ -260,7 +258,7 @@ class JWT
      * @param mixed $payload
      * @return JWT
      */
-    public static function create($algorithm, $payload) : JWT
+    public static function create($algorithm, $payload): JWT
     {
         return new JWT($algorithm, $payload);
     }

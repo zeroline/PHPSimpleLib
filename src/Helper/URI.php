@@ -2,7 +2,8 @@
 
 namespace PHPSimpleLib\Helper;
 
-final class URI {
+final class URI
+{
     /**
      * Parses an URI and returns its parts like parse_url
      *
@@ -23,7 +24,7 @@ final class URI {
             },
             $uri
         );
-    
+
         $result = [
             'scheme' => null,
             'host' => null,
@@ -33,13 +34,13 @@ final class URI {
             'fragment' => null,
             'query' => null,
         ];
-    
+
         if (preg_match('% ^([A-Za-z][A-Za-z0-9+-\.]+): %x', $uri, $matches)) {
             $result['scheme'] = $matches[1];
             // Take what's left.
             $uri = substr($uri, strlen($result['scheme']) + 1);
         }
-    
+
         // Taking off a fragment part
         if (false !== strpos($uri, '#')) {
             list($uri, $result['fragment']) = explode('#', $uri, 2);
@@ -48,7 +49,7 @@ final class URI {
         if (false !== strpos($uri, '?')) {
             list($uri, $result['query']) = explode('?', $uri, 2);
         }
-    
+
         if ('///' === substr($uri, 0, 3)) {
             // The triple slash uris are a bit unusual, but we have special handling
             // for them.
@@ -86,7 +87,7 @@ final class URI {
         } else {
             $result['path'] = $uri;
         }
-    
+
         return $result;
     }
 }

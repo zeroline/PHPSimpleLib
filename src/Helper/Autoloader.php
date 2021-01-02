@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Helper;
@@ -29,7 +30,6 @@ class Autoloader
             $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
         $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
         if (file_exists($fileName)) {
             require $fileName;
         }
@@ -40,11 +40,12 @@ class Autoloader
         spl_autoload_register('\PHPSimpleLib\Helper\Autoloader::autoload');
     }
 
-    public static function useComposerAutoloader() {
-        if (file_exists(getcwd() .'/vendor/autoload.php')) {
-            require_once getcwd() .'/vendor/autoload.php';
+    public static function useComposerAutoloader()
+    {
+        if (file_exists(getcwd() . '/vendor/autoload.php')) {
+            require_once getcwd() . '/vendor/autoload.php';
         } else {
-            require_once getcwd() .'/../vendor/autoload.php';
+            require_once getcwd() . '/../vendor/autoload.php';
         }
     }
 }

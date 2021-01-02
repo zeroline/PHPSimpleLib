@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) Frederik Nieß <fred@zeroline.me> - All Rights Reserved */
 
 namespace PHPSimpleLib\Core\Communication\Rest\AsyncCurl;
@@ -13,32 +14,27 @@ class CurlJob
      * @var string
      */
     private $url = null;
-    
-    /**
+/**
      *
      * @var array
      */
     private $parameter = array();
-    
-    /**
+/**
      *
      * @var string {@see EnumHTTPVerbs }
      */
     private $method = null;
-    
-    /**
+/**
      *
      * @var mixed
      */
     private $result = null;
-    
-    /**
+/**
      *
      * @var mixed
      */
     private $additionalInfo = null;
-    
-    /**
+/**
      *
      * @param string $url
      * @param array $parameter
@@ -51,34 +47,34 @@ class CurlJob
         $this->method = $method;
         $this->additionalInfo = $additionalInfo;
     }
-    
+
     /**
      *
      * @return string
      */
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return $this->url;
     }
-    
+
     /**
      *
      * @return array
      */
-    public function getParameter() : array
+    public function getParameter(): array
     {
         return $this->parameter;
     }
-    
+
     /**
      *
      * @return string {@see EnumHTTPVerbs }
      */
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return $this->method;
     }
-    
+
     /**
      *
      * @return mixed
@@ -87,7 +83,7 @@ class CurlJob
     {
         return $this->result;
     }
-    
+
     /**
      *
      * @param mixed $result
@@ -96,7 +92,7 @@ class CurlJob
     {
         $this->result = $result;
     }
-    
+
     /**
      *
      * @return mixed
