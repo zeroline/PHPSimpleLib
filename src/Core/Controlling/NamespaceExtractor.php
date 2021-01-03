@@ -91,7 +91,12 @@ final class NamespaceExtractor
                     }
                 }
             }
+
+            if(empty($namespace)) {
+                $namespace = static::byRegExp($buffer);
+            }
         }
+
         return array($namespace, $class);
     }
 }

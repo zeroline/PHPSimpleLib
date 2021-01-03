@@ -250,14 +250,17 @@ class ModuleManager
         $commandControllerFolderName = $this->getConfig('commandControllerFolderName', self::DEFAULT_FOLDER_COMMAND);
 // Load modules and controller from application environment
         if (is_dir($moduleFolder)) {
+            
             foreach (new \DirectoryIterator($moduleFolder) as $moduleFile) {
+                
                 if ($moduleFile->isDir() && !$moduleFile->isDot()) {
                     $currentModuleFolder = $moduleFile->getFilename();
+                    
                     $this->checkModuleName($currentModuleFolder);
                     $this->addModule($currentModuleFolder);
                     $this->addModuleFolder($currentModuleFolder, $moduleFile->getPath() . DIRECTORY_SEPARATOR . $currentModuleFolder);
         // Controller
-                    $controllerDir = $moduleFolderName . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $controllerFolderName . DIRECTORY_SEPARATOR;
+                    $controllerDir = $moduleFolder . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $controllerFolderName . DIRECTORY_SEPARATOR;
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
                             //$controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
@@ -273,7 +276,7 @@ class ModuleManager
                     }
 
                     // CommandController
-                    $controllerDir = $moduleFolderName . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $commandControllerFolderName . DIRECTORY_SEPARATOR;
+                    $controllerDir = $moduleFolder . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $commandControllerFolderName . DIRECTORY_SEPARATOR;
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
                                 $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
