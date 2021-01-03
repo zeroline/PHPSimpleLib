@@ -9,8 +9,7 @@ use PHPSimpleLib\Core\Controlling\NamespaceExtractor;
 class ModuleManager
 {
     use \PHPSimpleLib\Core\Data\ConfigReaderTrait;
-                                                                                                                                                                                                       use \PHPSimpleLib\Core\ObjectFactory\Singleton;
-
+    use \PHPSimpleLib\Core\ObjectFactory\Singleton;
 
     const DEFAULT_LIBRARY_NAME = "PHPSimpleLib";
     const DEFAULT_FOLDER_MODULES = 'Modules';
@@ -65,6 +64,11 @@ class ModuleManager
      * @var array
      */
     private $moduleCommandController = array();
+
+    public function __construct(array $config = array())
+    {
+        $this->config = $config;
+    }
 
     /**
      *

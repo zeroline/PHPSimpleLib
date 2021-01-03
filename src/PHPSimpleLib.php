@@ -33,21 +33,24 @@ final class PHPSimpleLib
          * Store the config
          */
         $this->config = $config;
-/**
+        
+        /**
          * Get basic error handling config
          */
         error_reporting($this->getConfig('error.level', E_ALL));
         ini_set('log_errors', $this->getConfig('error.log_errors', '1'));
         ini_set('display_errors', $this->getConfig('error.display_errors', '0'));
-// Set timezone
+        
+        // Set timezone
         date_default_timezone_set($this->getConfig('timezone', 'Europe/Berlin'));
-/**
+        
+        /**
          * Set right encoding
          * We use UTF-8 ( mb4 in MySQL )
          */
         mb_internal_encoding('UTF-8');
         mb_http_output('UTF-8');
-/**
+        /**
          * Require and activate the autoloader
          */
         require 'Helper/Autoloader.php';
@@ -61,7 +64,10 @@ final class PHPSimpleLib
          * Get the DB config and instanciate the DBConnectionManager
          */
         DBConnectionManager::getInstance($this->getConfig('db', array()));
-/**
+
+        ModuleManager::getInstance($this->getConfig('modules', array()));
+
+        /**
          * Get log hanlder classes and configuration from the config.
          */
         $logging = $this->getConfig('logging', array());
