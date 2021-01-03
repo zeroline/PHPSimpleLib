@@ -24,11 +24,11 @@ final class SQLExecuter
     public static function loadAndExecute(string $sqlFilename, string $connection = DBConnectionManager::DEFAULT_CONNECTION_NAME): void
     {
         if (!is_readable($sqlFilename)) {
-            throw new \Exception('SQL file "' . sqlFilename . '" is not readable.');
+            throw new \Exception('SQL file "' . $sqlFilename . '" is not readable.');
         }
         $repository = GenericRepository::getInstance();
         $repository->setConnection($connection);
-        $repository->beginTransaction();
+        //$repository->beginTransaction();
         $result = null;
         $query = '';
         $fileLines = file($sqlFilename);
@@ -43,7 +43,7 @@ final class SQLExecuter
             if ($endWith == ';') {
                 $result = $repository->executeRaw($query);
                 if ($result === false) {
-                    $repository->rollbackTransaction();
+                    //$repository->rollbackTransaction();
                     throw new \Exception('Execution of SQL script file "' . $sqlFilename . '" aborted. Failure at script line "' . $query . '"');
                     break;
                 }
@@ -51,10 +51,15 @@ final class SQLExecuter
             }
         }
 
+        /*
         if ($result === true) {
             $repository->commitTransaction();
         } else {
             $repository->rollbackTransaction();
         }
+        */
+
+        // TODO: Table creation does not benefit from transactions
+        // MySQL does not rollback or commit that kind of executions
     }
 }
