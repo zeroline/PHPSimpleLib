@@ -260,7 +260,9 @@ class ModuleManager
                     $controllerDir = $moduleFolderName . DIRECTORY_SEPARATOR . $currentModuleFolder . DIRECTORY_SEPARATOR . $controllerFolderName . DIRECTORY_SEPARATOR;
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
-                            $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
+                            //$controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
+                            list($controllerNamespace, $controllerClassname) = NamespaceExtractor::byFile($filename);
+                            $controllerClass = '\\' .$controllerNamespace.'\\'.$controllerClassname;
                         try {
                             $this->controllerInstances[$controllerClass] = $controllerClass::getInstance();
                             $this->controllerRouteMappings = array_merge($controllerClass::getInstance()->getRouteMappings(), $this->controllerRouteMappings);
@@ -275,6 +277,8 @@ class ModuleManager
                     $controllerFiles = glob($controllerDir . '*.php');
                     foreach ($controllerFiles as $filename) {
                                 $controllerClass = '\\' . str_replace(array('/','.php'), array('\\',''), $filename);
+                                list($controllerNamespace, $controllerClassname) = NamespaceExtractor::byFile($filename);
+                                $controllerClass = '\\' .$controllerNamespace.'\\'.$controllerClassname;
                         try {
                             $this->commandControllerInstances[$controllerClass] = $controllerClass::getInstance();
                             $this->addCommandControllerToModule($currentModuleFolder, $controllerClass::getInstance());
