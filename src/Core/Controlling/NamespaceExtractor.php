@@ -60,17 +60,22 @@ final class NamespaceExtractor
      * @param string $filename 
      * @return array 
      */
-    public static function byFile(string $filename) : array {
+    public static function byFile(string $filename) : array 
+    {
         $fp = fopen($filename, 'r');
         $class = $namespace = $buffer = '';
         $i = 0;
         while (!$class) {
-            if (feof($fp)) break;
+            if (feof($fp)) {
+                break;
+            }
 
             $buffer .= fread($fp, 512);
             $tokens = token_get_all($buffer);
 
-            if (strpos($buffer, '{') === false) continue;
+            if (strpos($buffer, '{') === false) {
+                continue;
+            }
 
             for (;$i<count($tokens);$i++) {
                 if ($tokens[$i][0] === T_NAMESPACE) {
